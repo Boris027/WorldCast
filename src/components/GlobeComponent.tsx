@@ -1,10 +1,13 @@
 "use client";
 import React, { useRef, useEffect } from "react";
 import * as THREE from 'three';
-import Globe from "globe.gl";
-import images from "@/assets/images/clouds.png"
+import clouds from "@/assets/images/clouds.png"
+import nightsky from "@/assets/images/night-sky.png"
+import worldimage from "@/assets/images/earth-blue-marble.jpg"
+import topology from "@/assets/images/earth-topology.png"
 import dataset from "@/assets/datasets/countries.json"
 import * as d3 from "d3";
+import Globe from "globe.gl";
 
 interface FeatureProperties {
   ADMIN: string;
@@ -16,6 +19,8 @@ interface GlobeComponentProps {
   onClickCountry: (country: string,subname:string) => void; // callback from parent
 }
 
+
+
 const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
   const globeContainer = useRef<HTMLDivElement | null>(null);
 
@@ -24,11 +29,11 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
 
     // Initialize Globe
     const globe = (Globe as any)()
-      .globeImageUrl("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg") // realistic Earth
-      .bumpImageUrl("//unpkg.com/three-globe/example/img/earth-topology.png")  // surface bumps
+      .globeImageUrl(worldimage.src) // realistic Earth
+      .bumpImageUrl(topology.src)  // surface bumps
       .showGlobe(true)
       .showGraticules(true) // optional latitude/longitude lines
-      .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png");
+      .backgroundImageUrl(nightsky.src);
       
     globe(globeContainer.current); // attach to div
     
@@ -37,11 +42,11 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
     globe.controls().autoRotateSpeed = 0.35;
 
 
-    const CLOUDS_IMG_URL = images.src; // from https://github.com/turban/webgl-earth
+    const CLOUDS_IMG_URL = clouds.src; // from https://github.com/turban/webgl-earth
     const CLOUDS_ALT = 0.004;
     const CLOUDS_ROTATION_SPEED = -0.006; // deg/frame
 
-    console.log(images.src)
+    console.log(clouds.src)
     new THREE.TextureLoader().load(CLOUDS_IMG_URL, cloudsTexture => {
       const clouds = new THREE.Mesh(
         new THREE.SphereGeometry(globe.getGlobeRadius() * (1 + CLOUDS_ALT), 75, 75),

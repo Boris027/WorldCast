@@ -45,6 +45,22 @@ const GlobeComponent = () => {
       })();
     });
 
+
+
+
+    // Deterministic color generator based on a string (e.g., ISO_A3)
+const stringToColor = str => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const hue = Math.abs(hash) % 360;          // 0 - 359 degrees on the color wheel
+  const saturation = 70;                     // 70% saturation
+  const lightness = 50;                      // 50% lightness
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+};
+
+    
     // Load countries
     const countries = dataset; // already imported
     const getVal = d => d.properties.POP_EST || 0; // example: use population
@@ -54,17 +70,19 @@ const GlobeComponent = () => {
     globe
       .polygonsData(countries.features.filter(d => d.properties.ISO_A2 !== 'AQ'))
       .polygonAltitude(0.06)
-      .polygonCapColor(feat => colorScale(getVal(feat)))
+      .polygonCapColor(feat => stringToColor(feat.properties.ISO_A3)) // use ISO code, no population
       .polygonSideColor(() => 'rgba(0, 100, 0, 0.15)')
       .polygonStrokeColor(() => '#111')
       .polygonLabel(({ properties: d }) => `
         <b>${d.ADMIN} (${d.ISO_A2}):</b> <br />
-        Population: <i>${d.POP_EST}</i><br/>
-        GDP: <i>${d.GDP_MD_EST}</i> M$
       `)
+      /*Population: <i>${d.POP_EST}</i><br/>
+        GDP: <i>${d.GDP_MD_EST}</i> M$ */
       .onPolygonHover(hoverD => globe
         .polygonAltitude(d => d === hoverD ? 0.12 : 0.06)
-        .polygonCapColor(d => d === hoverD ? 'steelblue' : colorScale(getVal(d)))
+        .polygonCapColor(d =>
+        d === hoverD ? "steelblue" : stringToColor(d.properties.ISO_A3)
+      )
       )
       .polygonsTransitionDuration(300);
     

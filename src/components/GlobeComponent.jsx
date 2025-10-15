@@ -3,6 +3,8 @@ import React, { useRef, useEffect } from "react";
 import * as THREE from 'three';
 import Globe from "globe.gl";
 import images from "@/assets/images/clouds.png"
+import dataset from "@/assets/datasets/countries.json"
+import * as d3 from "d3";
 
 const GlobeComponent = () => {
   const globeContainer = useRef();
@@ -43,8 +45,29 @@ const GlobeComponent = () => {
       })();
     });
 
+    // Load countries
+    const countries = dataset; // already imported
+    const getVal = d => d.properties.POP_EST || 0; // example: use population
+    const maxVal = Math.max(...countries.features.map(getVal));
+    const colorScale = d3.scaleSequentialSqrt(d3.interpolateYlGnBu).domain([0, maxVal]);
 
-
+    globe
+      .polygonsData(countries.features.filter(d => d.properties.ISO_A2 !== 'AQ'))
+      .polygonAltitude(0.06)
+      .polygonCapColor(feat => colorScale(getVal(feat)))
+      .polygonSideColor(() => 'rgba(0, 100, 0, 0.15)')
+      .polygonStrokeColor(() => '#111')
+      .polygonLabel(({ properties: d }) => `
+        <b>${d.ADMIN} (${d.ISO_A2}):</b> <br />
+        Population: <i>${d.POP_EST}</i><br/>
+        GDP: <i>${d.GDP_MD_EST}</i> M$
+      `)
+      .onPolygonHover(hoverD => globe
+        .polygonAltitude(d => d === hoverD ? 0.12 : 0.06)
+        .polygonCapColor(d => d === hoverD ? 'steelblue' : colorScale(getVal(d)))
+      )
+      .polygonsTransitionDuration(300);
+    
   }, []);
 
   return <div ref={globeContainer} style={{ width: "100vw", height: "100vh" }} />;

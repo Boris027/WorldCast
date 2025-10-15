@@ -6,14 +6,24 @@ import images from "@/assets/images/clouds.png"
 import dataset from "@/assets/datasets/countries.json"
 import * as d3 from "d3";
 
-const GlobeComponent = () => {
-  const globeContainer = useRef();
+interface FeatureProperties {
+  ADMIN: string;
+  ISO_A2: string;
+  [key: string]: any; // optional for extra properties
+}
+
+interface GlobeComponentProps {
+  onClickCountry: (country: string,subname:string) => void; // callback from parent
+}
+
+const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
+  const globeContainer = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!globeContainer.current) return;
 
     // Initialize Globe
-    const globe = Globe()
+    const globe = (Globe as any)()
       .globeImageUrl("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg") // realistic Earth
       .bumpImageUrl("//unpkg.com/three-globe/example/img/earth-topology.png")  // surface bumps
       .showGlobe(true)
@@ -49,7 +59,7 @@ const GlobeComponent = () => {
 
 
     // Deterministic color generator based on a string (e.g., ISO_A3)
-const stringToColor = str => {
+const stringToColor = (str:any) => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -63,27 +73,33 @@ const stringToColor = str => {
     
     // Load countries
     const countries = dataset; // already imported
-    const getVal = d => d.properties.POP_EST || 0; // example: use population
+    const getVal = (d:any) => d.properties.POP_EST || 0; // example: use population
     const maxVal = Math.max(...countries.features.map(getVal));
     const colorScale = d3.scaleSequentialSqrt(d3.interpolateYlGnBu).domain([0, maxVal]);
+
+
 
     globe
       .polygonsData(countries.features.filter(d => d.properties.ISO_A2 !== 'AQ'))
       .polygonAltitude(0.06)
-      .polygonCapColor(feat => stringToColor(feat.properties.ISO_A3)) // use ISO code, no population
+      .polygonCapColor((feat:any) => stringToColor(feat.properties.ISO_A3)) // use ISO code, no population
       .polygonSideColor(() => 'rgba(0, 100, 0, 0.15)')
       .polygonStrokeColor(() => '#111')
-      .polygonLabel(({ properties: d }) => `
-        <b>${d.ADMIN} (${d.ISO_A2}):</b> <br />
-      `)
+      .polygonLabel(({ properties }: { properties: FeatureProperties }) => `
+  <b>${properties.ADMIN} (${properties.ISO_A2}):</b> <br />
+`)
       /*Population: <i>${d.POP_EST}</i><br/>
         GDP: <i>${d.GDP_MD_EST}</i> M$ */
-      .onPolygonHover(hoverD => globe
-        .polygonAltitude(d => d === hoverD ? 0.12 : 0.06)
-        .polygonCapColor(d =>
+      .onPolygonHover((hoverD:any) => globe
+        .polygonAltitude((d: any) => d === hoverD ? 0.12 : 0.06)
+        .polygonCapColor((d: { properties: { ISO_A3: any; }; }) =>
         d === hoverD ? "steelblue" : stringToColor(d.properties.ISO_A3)
       )
       )
+      .onPolygonClick((d: { properties: { ADMIN: any; ISO_A2: any; }; }) => {
+        // Log the country name to the console
+        onClickCountry(d.properties.ADMIN,d.properties.ISO_A2)
+      })
       .polygonsTransitionDuration(300);
     
   }, []);

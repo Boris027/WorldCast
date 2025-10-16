@@ -6,8 +6,10 @@ import VideoPlayer from "@/components/VideoPlayer"
 import {loadPlaylist} from "@/services/FindChannelsInList"
 import Sidebar from "@/components/SideBar";
 import { listPlaylist } from "@/interfaces/listPlaylist";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { findNews } from "@/services/FindNews";
+import * as Cesium from "cesium";
+
 export default function Home() {
 
   async function getCountryPlaylists(country:string,subname:string){
@@ -16,11 +18,26 @@ export default function Home() {
   }
 
   async function onClickPlaylist(url:string){
-    console.log(url)
+    setCurrentUrl(url);
   }
 
   const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
+  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
+  /*useEffect(() => {
+    const initCesium = async () => {
+      // Wait for Cesium's world terrain
+      const terrainProvider = await Cesium.createWorldTerrainAsync();
 
+      // Initialize viewer ONLY here, after the div exists
+      const viewer = new Cesium.Viewer("cesiumContainer", { terrainProvider });
+
+      // Optional: cleanup on unmount
+      return () => viewer.destroy();
+    };
+
+    initCesium();
+  }, []);*/
+  /*<div id="cesiumContainer"></div> */
 
   return (
     /*className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20"*/
@@ -28,10 +45,10 @@ export default function Home() {
 
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <GlobeComponent onClickCountry={getCountryPlaylists}></GlobeComponent>
-        
+
         <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist}></Sidebar>
-        <VideoPlayer url={"https://streaming004.gestec-video.com/hls/MIJAS.m3u8"} ></VideoPlayer>
-        
+        <div id="player"></div>
+        <VideoPlayer url={currentUrl} ></VideoPlayer>
 
         
       </main>
@@ -41,4 +58,6 @@ export default function Home() {
       </footer>
     </div>
   );
+
+
 }

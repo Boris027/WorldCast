@@ -14,6 +14,7 @@ export default function Home() {
 
   async function getCountryPlaylists(country:string,subname:string){
     setPlaylist(await loadPlaylist(country))
+    sidebarVisibility("block")
     findNews(country)
   }
 
@@ -22,8 +23,14 @@ export default function Home() {
     setCurrentUrl(url);
   }
 
+  async function sidebarVisibility(state:string){
+    setCurrentVisibility(state)
+  }
+
   const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
+  const [visibility,setCurrentVisibility]=useState<string>("none")
+
   /*useEffect(() => {
     const initCesium = async () => {
       // Wait for Cesium's world terrain
@@ -47,7 +54,7 @@ export default function Home() {
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <GlobeComponent onClickCountry={getCountryPlaylists}></GlobeComponent>
 
-        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist}></Sidebar>
+        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility}></Sidebar>
         <VideoPlayer url={currentUrl} onClickClose={onClickPlaylist}></VideoPlayer>
 
         

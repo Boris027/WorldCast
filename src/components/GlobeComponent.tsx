@@ -86,7 +86,7 @@ const stringToColor = (str:any) => {
 
     globe
       .polygonsData(countries.features.filter(d => d.properties.ISO_A2 !== 'AQ'))
-      .polygonAltitude(0.06)
+      .polygonAltitude(0.009)
       .polygonCapColor((feat:any) => stringToColor(feat.properties.ISO_A3)) // use ISO code, no population
       .polygonSideColor(() => 'rgba(0, 100, 0, 0.15)')
       .polygonStrokeColor(() => '#111')
@@ -96,7 +96,7 @@ const stringToColor = (str:any) => {
       /*Population: <i>${d.POP_EST}</i><br/>
         GDP: <i>${d.GDP_MD_EST}</i> M$ */
       .onPolygonHover((hoverD:any) => globe
-        .polygonAltitude((d: any) => d === hoverD ? 0.12 : 0.06)
+        .polygonAltitude((d: any) => d === hoverD ? 0.08 : 0.009)
         .polygonCapColor((d: { properties: { ISO_A3: any; }; }) =>
         d === hoverD ? "steelblue" : stringToColor(d.properties.ISO_A3)
       )

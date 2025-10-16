@@ -7,12 +7,16 @@ import {loadPlaylist} from "@/services/FindChannelsInList"
 import Sidebar from "@/components/SideBar";
 import { listPlaylist } from "@/interfaces/listPlaylist";
 import { useState } from "react";
+import { findNews } from "@/services/FindNews";
 export default function Home() {
 
-  async function printcountry(country:string,subname:string){
-    console.log(country)
-    console.log(subname)
+  async function getCountryPlaylists(country:string,subname:string){
     setPlaylist(await loadPlaylist(country))
+    findNews(country)
+  }
+
+  async function onClickPlaylist(url:string){
+    console.log(url)
   }
 
   const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
@@ -23,9 +27,11 @@ export default function Home() {
     <div>
 
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Sidebar playlist={playlist}></Sidebar>
-        <GlobeComponent onClickCountry={printcountry}></GlobeComponent>
+        <GlobeComponent onClickCountry={getCountryPlaylists}></GlobeComponent>
+        
+        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist}></Sidebar>
         <VideoPlayer url={"https://streaming004.gestec-video.com/hls/MIJAS.m3u8"} ></VideoPlayer>
+        
 
         
       </main>

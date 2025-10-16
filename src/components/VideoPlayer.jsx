@@ -21,7 +21,7 @@ const VideoPlayer = ({ url }) => {
     }
   }, [url]);
 
-  return <video ref={videoRef} controls width="720" />;
+  return <video ref={videoRef} controls width="720"/>;
 };
 
 export default VideoPlayer;

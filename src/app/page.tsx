@@ -17,7 +17,8 @@ export default function Home() {
     findNews(country)
   }
 
-  async function onClickPlaylist(url:string){
+  async function onClickPlaylist(url:any){
+    console.log(url)
     setCurrentUrl(url);
   }
 
@@ -47,8 +48,7 @@ export default function Home() {
         <GlobeComponent onClickCountry={getCountryPlaylists}></GlobeComponent>
 
         <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist}></Sidebar>
-        <div id="player"></div>
-        <VideoPlayer url={currentUrl} ></VideoPlayer>
+        <VideoPlayer url={currentUrl} onClickClose={onClickPlaylist}></VideoPlayer>
 
         
       </main>

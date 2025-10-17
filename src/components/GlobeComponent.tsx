@@ -43,6 +43,9 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
     globe.controls().autoRotateSpeed = 0.35;
 
 
+
+
+
     const CLOUDS_IMG_URL = clouds.src; // from https://github.com/turban/webgl-earth
     const CLOUDS_ALT = 0.004;
     const CLOUDS_ROTATION_SPEED = -0.006; // deg/frame
@@ -109,7 +112,24 @@ const stringToColor = (str:any) => {
       })
       .polygonsTransitionDuration(300);
     
+
+      // ===== Make globe responsive =====
+    const handleResize = () => {
+      if (!globeContainer.current) return;
+      globe.width([window.innerWidth]);
+      globe.height([window.innerHeight]);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // set initial size
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+
   }, []);
+
+  
 
   return <div ref={globeContainer} style={{ display: "flex", flex: 1, width: "100%", height: "100%" }} />;
 };

@@ -22,9 +22,10 @@ interface GlobeComponentProps {
 
 
 const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
-  const globeContainer = useRef<HTMLDivElement | null>(null);
+  const globeContainer:any = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (typeof window === "undefined" || !globeContainer.current) return;
     if (!globeContainer.current) return;
 
     // Initialize Globe

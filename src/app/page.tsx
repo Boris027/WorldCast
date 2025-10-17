@@ -15,6 +15,8 @@ export default function Home() {
   async function getCountryPlaylists(country:string,subname:string){
     setPlaylist(await loadPlaylist(country))
     setCurrentcountry(country)
+    setshowchannelsimage(false)
+    setsubname(subname)
     sidebarVisibility("block")
     findNews(country)
   }
@@ -33,6 +35,8 @@ export default function Home() {
   const [currentPlaylistname, setcurrentPlaylistname] = useState<string | null>(null);
   const [visibility,setCurrentVisibility]=useState<string>("none")
   const [country,setCurrentcountry]=useState<string>("none")
+  const [showchannelsimage,setshowchannelsimage]=useState<boolean>(false)
+  const [subname,setsubname]=useState<string>("none")
 
   /*useEffect(() => {
     const initCesium = async () => {
@@ -57,7 +61,7 @@ export default function Home() {
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <GlobeComponent onClickCountry={getCountryPlaylists}></GlobeComponent>
 
-        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country}></Sidebar>
+        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage}></Sidebar>
         <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname} onClickClose={onClickPlaylist}></VideoPlayer>
 
         

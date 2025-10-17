@@ -1,16 +1,19 @@
 import React, { useRef, useEffect } from "react";
 import { listPlaylist } from "@/interfaces/listPlaylist";
+import { List } from "react-window";
 
 interface SidebarProps {
   playlist: listPlaylist[];
   onClickPlaylist: (url:string,name:string) => void; // callback from parent
   visibility:string,
   sidebarVisibility: (state:string)=>void,
-  country:string
+  country:string,
+  subname:string,
+  channelLogos:boolean
 }
 
 
-const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,sidebarVisibility,country }:any) => {
+const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,sidebarVisibility,country,subname,channelLogos }:any) => {
     return (
         <div style={{position:"fixed",zIndex:"100", right:"0px",width:"310px", height:"100%",overflowY:"scroll", backgroundColor:"#1A1C23", display:visibility}}>
 
@@ -50,13 +53,12 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
             </div>
 
             
-
             <div id="channelcontainer">
                 {playlist.map((item:any,index:number)=>{
                     return <button key={item.name+";"+index} name={item.name} onClick={()=>{
                         onClickPlaylist(item.url,item.name)
                     }} style={{display:"flex", margin:"0px",padding:"15px", alignItems:"center",gap:"10px"}}>
-                        <img src={item.logo+index} style={{width:"60px", height:"60px"}}></img>
+                        {channelLogos ? <img src={item.logo||null} style={{width:"60px", height:"60px"}}></img> : <img  src={`https://flagsapi.com/${subname}/flat/64.png`} style={{width:"60px", height:"60px"}}></img>}
                         <p style={{maxWidth:"250px"}}>{item.name}</p>
                         </button>
                 })}

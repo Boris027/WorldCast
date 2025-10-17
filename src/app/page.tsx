@@ -14,13 +14,14 @@ export default function Home() {
 
   async function getCountryPlaylists(country:string,subname:string){
     setPlaylist(await loadPlaylist(country))
+    setCurrentcountry(country)
     sidebarVisibility("block")
     findNews(country)
   }
 
-  async function onClickPlaylist(url:any){
-    console.log(url)
+  async function onClickPlaylist(url:any,name:string){
     setCurrentUrl(url);
+    setcurrentPlaylistname(name)
   }
 
   async function sidebarVisibility(state:string){
@@ -29,7 +30,9 @@ export default function Home() {
 
   const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
+  const [currentPlaylistname, setcurrentPlaylistname] = useState<string | null>(null);
   const [visibility,setCurrentVisibility]=useState<string>("none")
+  const [country,setCurrentcountry]=useState<string>("none")
 
   /*useEffect(() => {
     const initCesium = async () => {
@@ -54,8 +57,8 @@ export default function Home() {
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <GlobeComponent onClickCountry={getCountryPlaylists}></GlobeComponent>
 
-        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility}></Sidebar>
-        <VideoPlayer url={currentUrl} onClickClose={onClickPlaylist}></VideoPlayer>
+        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country}></Sidebar>
+        <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname} onClickClose={onClickPlaylist}></VideoPlayer>
 
         
       </main>

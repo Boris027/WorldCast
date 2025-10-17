@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as THREE from 'three';
 import clouds from "@/assets/images/clouds.png"
 import nightsky from "@/assets/images/night-sky.png"
@@ -32,7 +32,7 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
       .globeImageUrl(worldimage.src) // realistic Earth
       .bumpImageUrl(topology.src)  // surface bumps
       .showGlobe(true)
-      .showGraticules(true) // optional latitude/longitude lines
+      .showGraticules(false) // optional latitude/longitude lines
       .backgroundImageUrl(nightsky.src);
       
     globe(globeContainer.current); // attach to div
@@ -72,7 +72,8 @@ const stringToColor = (str:any) => {
   const hue = Math.abs(hash) % 360;          // 0 - 359 degrees on the color wheel
   const saturation = 70;                     // 70% saturation
   const lightness = 50;                      // 50% lightness
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  const alpha=1;                           // transparency
+  return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
 };
 
     
@@ -109,7 +110,7 @@ const stringToColor = (str:any) => {
     
   }, []);
 
-  return <div ref={globeContainer} style={{ width: "100vw", height: "100vh" }} />;
+  return <div ref={globeContainer} style={{ display: "flex", flex: 1, width: "100%", height: "100%" }} />;
 };
 
 export default GlobeComponent;

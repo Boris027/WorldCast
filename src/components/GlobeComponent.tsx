@@ -17,11 +17,14 @@ interface FeatureProperties {
 
 interface GlobeComponentProps {
   onClickCountry: (country: string,subname:string) => void; // callback from parent
+  cloudsenabled:boolean,
+  rotating:boolean,
+  transparency:boolean
 }
 
 
 
-const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
+const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry,cloudsenabled,rotating,transparency }) => {
   const globeContainer:any = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -39,8 +42,11 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
     globe(globeContainer.current); // attach to div
     
     // Auto-rotate
-    globe.controls().autoRotate = true;
-    globe.controls().autoRotateSpeed = 0.35;
+    if(rotating){
+      globe.controls().autoRotate = true;
+      globe.controls().autoRotateSpeed = 0.35;
+    }
+    
 
 
 
@@ -50,19 +56,23 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry }) => {
     const CLOUDS_ALT = 0.004;
     const CLOUDS_ROTATION_SPEED = -0.006; // deg/frame
 
-    console.log(clouds.src)
-    new THREE.TextureLoader().load(CLOUDS_IMG_URL, cloudsTexture => {
+    if(cloudsenabled){
+      new THREE.TextureLoader().load(CLOUDS_IMG_URL, cloudsTexture => {
       const clouds = new THREE.Mesh(
         new THREE.SphereGeometry(globe.getGlobeRadius() * (1 + CLOUDS_ALT), 75, 75),
         new THREE.MeshPhongMaterial({ map: cloudsTexture, transparent: true })
       );
-      globe.scene().add(clouds);
+      
+        globe.scene().add(clouds);
+        
 
-      (function rotateClouds() {
-        clouds.rotation.y += CLOUDS_ROTATION_SPEED * Math.PI / 180;
-        requestAnimationFrame(rotateClouds);
-      })();
-    });
+        (function rotateClouds() {
+          clouds.rotation.y += CLOUDS_ROTATION_SPEED * Math.PI / 180;
+          requestAnimationFrame(rotateClouds);
+        })();
+      });
+    }
+    
 
 
 
@@ -76,7 +86,14 @@ const stringToColor = (str:any) => {
   const hue = Math.abs(hash) % 360;          // 0 - 359 degrees on the color wheel
   const saturation = 70;                     // 70% saturation
   const lightness = 50;                      // 50% lightness
-  const alpha=1;                           // transparency
+  let alpha=1;                           // transparency
+
+  if(transparency){
+    alpha=0;
+  }else{
+    alpha=1;
+  }
+
   return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
 };
 

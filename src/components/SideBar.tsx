@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { listPlaylist } from "@/interfaces/listPlaylist";
 import { List } from "react-window";
 
@@ -13,7 +13,17 @@ interface SidebarProps {
 }
 
 
+
+
+
 const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,sidebarVisibility,country,subname,channelLogos }:any) => {
+    const [valueInput,setvalueInput]=useState<string>("")
+
+    function clearinput(){
+        setvalueInput("")
+    }
+
+
     return (
         <div style={{position:"fixed",zIndex:"100", right:"0px",width:"310px", height:"100%",overflowY:"scroll", backgroundColor:"#1A1C23", display:visibility}}>
 
@@ -25,8 +35,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
 
                 <button type="button"  onClick={()=>{
                         sidebarVisibility("none")
-                        const channelcontainer=document.getElementById("channelcontainer")
-                        channelcontainer!.innerHTML=""
+                        clearinput()
                     }}>
                     <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -37,11 +46,12 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
             </div>
             
             <div style={{display:"flex",justifyContent:"center"}}>
-                <input type="text" id="input" placeholder="Channel" style={{borderColor:"white", backgroundColor:"#2E303B", borderRadius:"7px", margin:"auto", padding:"5px"}} onInput={x=>{
+                <input type="text" id="input" value={valueInput} placeholder="Channel" style={{borderColor:"white", backgroundColor:"#2E303B", borderRadius:"7px", margin:"auto", padding:"5px",}} onInput={x=>{
                     const content = (x.target as HTMLInputElement).value;
                     
                     const channelcontainer=document.getElementById("channelcontainer")
                     const buttons = Array.from(channelcontainer!.getElementsByTagName("button"));
+                    setvalueInput(content)
 
                     buttons.forEach((btn) => {
                         // Show button if its text includes the search term, else hide it

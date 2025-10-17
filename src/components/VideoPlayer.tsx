@@ -33,12 +33,16 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
     return;
   }
 
+  
+
 
   return <div style={{position: "absolute",top: "50%",left: "50%",transform: "translate(-50%, -50%)",backgroundColor:"#1A1C23",padding:"20px",borderRadius:"15px", zIndex:"101"}}>
     
     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingBottom:"15px"}}>
       <h1>{nameplaylist}</h1>
-      <button type="button"  onClick={()=>onClickClose(null)}>
+      <button type="button"  onClick={()=>{
+        onClickClose(null)}
+        }>
         <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
         </svg>

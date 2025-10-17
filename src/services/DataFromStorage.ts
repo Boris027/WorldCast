@@ -1,46 +1,53 @@
-export async function SetWorldRotation(type:boolean){
-    cookieStore.set("rotation",type+"")
+export function SetWorldRotation(type:boolean){
+    if (typeof window === "undefined") return true;
+    localStorage.setItem("rotation",type+"")
 }
 
-export async function GetWorldRotation():Promise<boolean>{
-    const rotation=await cookieStore.get("rotation")
+export function GetWorldRotation():boolean{
+    if (typeof window === "undefined") return true;
+    const rotation=localStorage.getItem("rotation")
+    
 
-    if(rotation?.value!=undefined){
-        return JSON.parse(rotation.value)
+    if(rotation!=undefined){
+        return JSON.parse(rotation)
     }else{
-        await SetWorldRotation(true)
+        SetWorldRotation(true)
         return true;
     }
 
 }
 
-export async function SetClouds(type:boolean){
-    cookieStore.set("clouds",type+"")
+export function SetClouds(type:boolean){
+    if (typeof window === "undefined") return true;
+    localStorage.setItem("clouds",type+"")
 }
 
-export async function GetClouds():Promise<boolean>{
-    const clouds=await cookieStore.get("clouds")
+export function GetClouds():boolean{
+    if (typeof window === "undefined") return true;
+    const clouds=localStorage.getItem("clouds")
 
-    if(clouds?.value!=undefined){
-        return JSON.parse(clouds.value)
+    if(clouds!=undefined){
+        return JSON.parse(clouds)
     }else{
-        await SetClouds(true)
+        SetClouds(true)
         return true;
     }
 
 }
 
 
-export async function SetTransparent(type:boolean){
-    cookieStore.set("transparent",type+"")
+export function SetTransparent(type:boolean){
+    if (typeof window === "undefined") return true;
+    localStorage.setItem("transparent",type+"")
 }
 
-export async function GetTransparent():Promise<boolean>{
-    const transparent=await cookieStore.get("transparent")
-    if(transparent?.value!=undefined){
-        return JSON.parse(transparent.value)
+export function GetTransparent():boolean{
+    if (typeof window === "undefined") return true;
+    const transparent=localStorage.getItem("transparent")
+    if(transparent!=undefined){
+        return JSON.parse(transparent)
     }else{
-        await SetTransparent(false)
+        SetTransparent(false)
         return false;
     }
 

@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { findNews } from "@/services/FindNews";
 import * as Cesium from "cesium";
 import TooglePanel from "@/components/TooglePanel";
+import { GetClouds, GetTransparent, GetWorldRotation } from "@/services/DataFromStorage";
 
 export default function Home() {
 
@@ -32,7 +33,17 @@ export default function Home() {
   }
 
   async function TooglePanelchanges(){
+    if(GetWorldRotation()!=rotation){
+      setrotation(!rotation)
+    }
 
+    if(GetClouds()!=clouds){
+      setclouds(!clouds)
+    }
+
+    if(GetTransparent()!=transparency){
+      settransparency(!transparency)
+    }
   }
 
   //playlist with all the channels
@@ -50,23 +61,35 @@ export default function Home() {
   //the subname of each country for example "ES" for Spain
   const [subname,setsubname]=useState<string>("none")
   //Planet rotation
-  const [rotation,setrotation]=useState<boolean>(false)
+  const [rotation,setrotation]=useState<boolean | null>(GetWorldRotation())
   //Clouds enabled
-  const [clouds,setclouds]=useState<boolean>(false)
+  const [clouds,setclouds]=useState<boolean | null>(GetClouds())
   //Transparency Country
-  const [transparency,settransparency]=useState<boolean>(false)
+  const [transparency,settransparency]=useState<boolean | null>(GetTransparent())
+
+
+  
   
 
   return (
     /*className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20"*/
     <div>
 
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <GlobeComponent onClickCountry={getCountryPlaylists} rotating={rotation} cloudsenabled={clouds} transparency={transparency}></GlobeComponent>
+      <main id="main" className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+        {rotation !== null && clouds !== null && transparency !== null ? (
+          <GlobeComponent
+            onClickCountry={getCountryPlaylists}
+            rotating={rotation}
+            cloudsenabled={clouds}
+            transparency={transparency}
+          />
+        ) : (
+          <p>Loading globe...</p>
+        )}
 
         <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage}></Sidebar>
         <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname} onClickClose={onClickPlaylist}></VideoPlayer>
-        <TooglePanel></TooglePanel>
+        <TooglePanel TooglePanelchanges={TooglePanelchanges}></TooglePanel>
         
       </main>
 

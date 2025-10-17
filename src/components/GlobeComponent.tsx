@@ -78,21 +78,21 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({ onClickCountry,cloudsen
 
 
     // Deterministic color generator based on a string (e.g., ISO_A3)
-const stringToColor = (str:any) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const hue = Math.abs(hash) % 360;          // 0 - 359 degrees on the color wheel
-  const saturation = 70;                     // 70% saturation
-  const lightness = 50;                      // 50% lightness
-  let alpha=1;                           // transparency
+    const stringToColor = (str:any) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue = Math.abs(hash) % 360;          // 0 - 359 degrees on the color wheel
+    const saturation = 70;                     // 70% saturation
+    const lightness = 50;                      // 50% lightness
+    let alpha=1;                           // transparency
 
-  if(transparency){
-    alpha=0;
-  }else{
-    alpha=1;
-  }
+    if(transparency){
+      alpha=0;
+    }else{
+      alpha=1;
+    }
 
   return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
 };
@@ -137,6 +137,7 @@ const stringToColor = (str:any) => {
       globe.height([window.innerHeight]);
     };
 
+    
     window.addEventListener("resize", handleResize);
     handleResize(); // set initial size
 
@@ -144,7 +145,7 @@ const stringToColor = (str:any) => {
       window.removeEventListener("resize", handleResize);
     };
 
-  }, []);
+  }, [cloudsenabled, rotating, transparency]);
 
   
 

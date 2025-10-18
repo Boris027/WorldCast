@@ -1,11 +1,14 @@
+import { setMode } from "@/app/router";
 import { GetClouds, GetTransparent, GetWorldRotation, SetClouds, SetTransparent, SetWorldRotation } from "@/services/DataFromStorage";
 import { useEffect, useState } from "react";
 
 interface TooglePanelProps {
   TooglePanelchanges: () => void; // callback from parent
+  mode:string,
+  changeMode:(mode:string)=>void
 }
 
-const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges }:any)=>{
+const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMode }:any)=>{
 
     const [checked, setChecked] = useState(false);
     const [checked2, setChecked2] = useState(false);
@@ -13,14 +16,47 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges }:any)=>{
 
     useEffect(() => {
         async function getStates(){
-            setChecked(await GetWorldRotation())
-            setChecked2(await GetClouds())
-            setChecked3(await GetTransparent())
+            setChecked(GetWorldRotation())
+            setChecked2(GetClouds())
+            setChecked3(GetTransparent())
         }
 
         getStates()
         
+        changeActivation(mode)
     },[])
+
+    function changeActivation(modexd:string){
+        if(modexd=="tv"){
+            document.getElementById("tv")?.classList.replace("text-gray-700","text-white")
+            document.getElementById("tv")?.classList.replace("bg-gray-200","bg-blue-500")
+            document.getElementById("radio")?.classList.replace("bg-blue-500","bg-gray-200")
+            document.getElementById("radio")?.classList.replace("text-white","text-gray-700")
+            document.getElementById("news")?.classList.replace("bg-blue-500","bg-gray-200")
+            document.getElementById("news")?.classList.replace("text-white","text-gray-700")
+        }else if(modexd=="radio"){
+            document.getElementById("radio")?.classList.replace("text-gray-700","text-white")
+            document.getElementById("radio")?.classList.replace("bg-gray-200","bg-blue-500")
+            document.getElementById("tv")?.classList.replace("bg-blue-500","bg-gray-200")
+            document.getElementById("tv")?.classList.replace("text-white","text-gray-700")
+            document.getElementById("news")?.classList.replace("bg-blue-500","bg-gray-200")
+            document.getElementById("news")?.classList.replace("text-white","text-gray-700")
+        }else if(modexd=="news"){
+            document.getElementById("news")?.classList.replace("text-gray-700","text-white")
+            document.getElementById("news")?.classList.replace("bg-gray-200","bg-blue-500")
+            document.getElementById("tv")?.classList.replace("bg-blue-500","bg-gray-200")
+            document.getElementById("tv")?.classList.replace("text-white","text-gray-700")
+            document.getElementById("radio")?.classList.replace("bg-blue-500","bg-gray-200")
+            document.getElementById("radio")?.classList.replace("text-white","text-gray-700")
+        }
+        
+    }
+
+    const buttons = [
+        { label: 'TV', value: 'tv' },
+        { label: 'Radio', value: 'radio' },
+        { label: 'News', value: 'news' },
+    ];
 
     
 
@@ -48,7 +84,7 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges }:any)=>{
         </label>
 
         <label className="inline-flex items-center cursor-pointer">
-            <input type="checkbox"  value="" className="sr-only peer" checked={checked3} onChange={(e) => {
+            <input disabled type="checkbox"  value="" className="sr-only peer" checked={checked3} onChange={(e) => {
                 setChecked3(e.target.checked)
                 SetTransparent(e.target.checked)
                 TooglePanelchanges()}}/>
@@ -58,9 +94,19 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges }:any)=>{
 
         <div className="w-max mx-auto mt-10">
             <div className="flex rounded-full border border-gray-300 overflow-hidden">
-                <button className="toggle-btn px-6 py-2 bg-blue-500 text-white" data-value="tv">TV</button>
-                <button className="toggle-btn px-6 py-2 bg-gray-200 text-gray-700" data-value="radio">Radio</button>
-                <button className="toggle-btn px-6 py-2 bg-gray-200 text-gray-700" data-value="news">News</button>
+                
+                <button id="tv" className="toggle-btn px-6 py-2 bg-gray-200 text-gray-700 cursor-pointer" data-value="tv" onClick={c=>{
+                    changeMode("tv")
+                    changeActivation("tv")
+                }}>TV</button>
+                <button id="radio" className="toggle-btn px-6 py-2 bg-gray-200 text-gray-700 cursor-pointer" data-value="radio" onClick={c=>{
+                    changeMode("radio")
+                    changeActivation("radio")
+                }}>Radio</button>
+                <button id="news" className="toggle-btn px-6 py-2 bg-gray-200 text-gray-700 cursor-pointer" data-value="news" onClick={c=>{
+                    changeMode("news")
+                    changeActivation("news")
+                }}>News</button>
             </div>
         </div>
         

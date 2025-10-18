@@ -11,8 +11,14 @@ import { findNews } from "@/services/FindNews";
 import * as Cesium from "cesium";
 import TooglePanel from "@/components/TooglePanel";
 import { GetClouds, GetTransparent, GetWorldRotation } from "@/services/DataFromStorage";
+import { GetRadio } from "@/services/FindRadioCountry";
+import { getModeFromUrl, setMode, useMode } from "./router";
+import { mode } from "d3";
 
 export default function Home() {
+
+  //initializate to tv
+  useMode()
 
   async function getCountryPlaylists(country:string,subname:string){
     setPlaylist(await loadPlaylist(country))
@@ -21,6 +27,8 @@ export default function Home() {
     setsubname(subname)
     sidebarVisibility("block")
     //findNews(country)
+
+    //GetRadio(subname)
   }
 
   async function onClickPlaylist(url:any,name:string){
@@ -46,6 +54,13 @@ export default function Home() {
     }
   }
 
+  async function ChangeMode(modexd:string){
+    if(modexd==mode) return;
+    console.log("hello")
+    setMode(modexd)
+    setCurrentmode(modexd)
+  }
+
   //playlist with all the channels
   const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
   //url which will be reproduced by the videoplayer
@@ -66,9 +81,9 @@ export default function Home() {
   const [clouds,setclouds]=useState<boolean | null>(GetClouds())
   //Transparency Country
   const [transparency,settransparency]=useState<boolean | null>(GetTransparent())
+  //Mode (tv,radio,news)
+  const [mode,setCurrentmode]=useState<string>(getModeFromUrl()!)
 
-
-  
   
 
   return (
@@ -89,7 +104,7 @@ export default function Home() {
 
         <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage}></Sidebar>
         <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname} onClickClose={onClickPlaylist}></VideoPlayer>
-        <TooglePanel TooglePanelchanges={TooglePanelchanges}></TooglePanel>
+        <TooglePanel TooglePanelchanges={TooglePanelchanges} mode={mode} changeMode={ChangeMode}></TooglePanel>
         
       </main>
 

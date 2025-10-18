@@ -49,6 +49,13 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
     globe(globeContainer.current);
     globeRef.current = globe;
 
+    
+
+    const polygonGroup = globe.scene().children.find(
+      (obj: any) => obj.name === "polygons"
+    );
+    (globe as any)._polygonGroup = polygonGroup; // store reference
+
     // Load country polygons
     const countries = dataset.features.filter((d: any) => d.properties.ISO_A2 !== "AQ");
     const maxVal = Math.max(...countries.map((d: any) => d.properties.POP_EST || 0));
@@ -155,27 +162,27 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
 
   // --- UPDATE TRANSPARENCY ---
   useEffect(() => {
-    const globe = globeRef.current;
-    if (!globe) return;
+  const globe = globeRef.current;
+  if (!globe || !(globe as any)._polygonsGroup) return;
 
-    // reapply color function based on transparency
-    const stringToColor = (str: string) => {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      const hue = Math.abs(hash) % 360;
-      const alpha = transparency ? 0 : 1;
-      return `hsla(${hue}, 70%, 50%, ${alpha})`;
-    };
+  const alpha = transparency ? 0 : 1;
 
-    globe.polygonCapColor((feat: any) => stringToColor(feat.properties.ISO_A3));
-  }, [transparency]);
+  (globe as any)._polygonsGroup.traverse((obj: any) => {
+    if (obj.material) {
+      obj.material.transparent = alpha < 1;
+      obj.material.opacity = alpha;
+      obj.material.needsUpdate = true;
+    }
+  });
+}, [transparency]);
+
+
+
 
   return (
     <div
       ref={globeContainer}
-      style={{ display: "flex", flex: 1, width: "100%", height: "100%" }}
+      style={{ display: "flex", flex: 1, width: "100%", height: "100%", }}
     />
   );
 };

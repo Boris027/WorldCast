@@ -13,7 +13,6 @@ import TooglePanel from "@/components/TooglePanel";
 import { GetClouds, GetTransparent, GetWorldRotation } from "@/services/DataFromStorage";
 import { GetRadio } from "@/services/FindRadioCountry";
 import { getModeFromUrl, setMode, useMode } from "./router";
-import { mode } from "d3";
 
 export default function Home() {
 
@@ -21,7 +20,15 @@ export default function Home() {
   useMode()
 
   async function getCountryPlaylists(country:string,subname:string){
-    setPlaylist(await loadPlaylist(country))
+    const mode=getModeFromUrl()
+    if(mode=="tv"){
+      setPlaylist(await loadPlaylist(country))
+    }else if(mode=="radio"){
+      setPlaylist(await GetRadio(subname))
+    }else if(mode=="news"){
+      console.log("xd")
+      setPlaylist(await findNews(subname))
+    }
     setCurrentcountry(country)
     setshowchannelsimage(false)
     setsubname(subname)
@@ -56,7 +63,6 @@ export default function Home() {
 
   async function ChangeMode(modexd:string){
     if(modexd==mode) return;
-    console.log("hello")
     setMode(modexd)
     setCurrentmode(modexd)
   }

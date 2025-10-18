@@ -2,6 +2,7 @@ import { RadioBrowserApi, StationSearchType } from 'radio-browser-api'
 
 const api = new RadioBrowserApi('My Radio App')
 
+
 export async function GetRadio(countrycode:string){
 
     const stations = await api.searchStations({
@@ -10,7 +11,16 @@ export async function GetRadio(countrycode:string){
         offset: 0 // this is the default - can be omited
     })
 
-    console.log(stations)
+    if(stations!=undefined){
+        const final=stations.map(c=>{
+        return {tvgId:c.changeId,logo:c.favicon,group:c.country,name:c.name,url:c.url}
+        })
+        return final;
+    }else{
+        return [{tvgId:"",logo:"",group:"",name:"",url:""}]
+    }
+    
+
 
 }
 

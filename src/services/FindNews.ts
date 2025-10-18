@@ -6,5 +6,15 @@ export async function findNews(country:String){
     })
     console.log(news)
 
-    return news
+    if(news?.articles && Array.isArray(news.articles)){
+        const finalnews=news.articles.map((c:any)=>{
+            return {tvgId:c.domain,logo:c.socialimage,group:c.sourcecountry,name:c.title,url:c.url}
+        })
+        return finalnews
+    }else{
+        return [{tvgId:"",logo:"",group:"",name:"",url:""}]
+    }
+    
+
+
 }

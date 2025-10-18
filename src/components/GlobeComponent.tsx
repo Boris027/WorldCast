@@ -77,9 +77,13 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
       .polygonCapColor((feat: any) => stringToColor(feat.properties.ISO_A3))
       .polygonSideColor(() => "rgba(0, 100, 0, 0.15)")
       .polygonStrokeColor(() => "#111")
-      .polygonLabel(({ properties }: { properties: FeatureProperties }) => `
-        <b>${properties.ADMIN} (${properties.ISO_A2})</b><br/>
-      `)
+      .polygonLabel(({ properties }: { properties: FeatureProperties }) => {
+
+        const isoCode = properties.ISO_A2 === "AQ1" ? "AQ" : properties.ISO_A2;
+        return `
+        <b>${properties.ADMIN} (${isoCode})</b><br/>
+      `
+      })
       .onPolygonHover((hoverD: any) =>
         globe
           .polygonAltitude((d: any) => (d === hoverD ? 0.08 : 0.009))

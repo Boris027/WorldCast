@@ -13,11 +13,11 @@ export async function GetRadio(countrycode:string){
 
     if(stations!=undefined){
         const final=stations.map(c=>{
-        return {tvgId:c.changeId,logo:c.favicon,group:c.country,name:c.name,url:c.url}
+        return {tvgId:c.changeId,logo:c.favicon,group:c.country,name:c.name,url:c.url,type:"radio"}
         })
         return final;
     }else{
-        return [{tvgId:"",logo:"",group:"",name:"",url:""}]
+        return [{tvgId:"",logo:"",group:"",name:"",url:"",type:"radio"}]
     }
     
 

@@ -16,6 +16,16 @@ async function getPlayList(country:string){
 
   if(country=="United States of America"){
     country="United States"
+  }else if(country=="Macedonia"){
+    country="North Macedonia"
+  }else if(country=="Republic of Serbia"){
+    country="Serbia"
+  }else if(country=="Czechia"){
+    country="Czech Republic"
+  }else if(country=="United Republic of Tanzania"){
+    country="Tanzania"
+  }else if(country=="Turkey"){
+    country="Turkiye"
   }
 
   if(Object.keys(finallist).length === 0){
@@ -65,6 +75,7 @@ async function convertM3UtoJSON(url: string): Promise<listPlaylist[]> {
         logo: logoMatch ? logoMatch[1] : null,
         group: groupMatch ? groupMatch[1] : null,
         url,
+        type:"tv"
       });
     }
   }
@@ -96,6 +107,7 @@ async function convertM3UtoJSON1(url:string):Promise<listPlaylist[]> {
         logo: logoMatch ? logoMatch[1] : null,
         group: groupMatch ? groupMatch[1] : null,
         url,
+        type:"tv"
       });
     }
   }

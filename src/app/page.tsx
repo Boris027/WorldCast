@@ -26,8 +26,7 @@ export default function Home() {
     }else if(mode=="radio"){
       setPlaylist(await GetRadio(subname))
     }else if(mode=="news"){
-      console.log("xd")
-      setPlaylist(await findNews(subname))
+      setPlaylist(await findNews(subname,country))
     }
     setCurrentcountry(country)
     setshowchannelsimage(false)

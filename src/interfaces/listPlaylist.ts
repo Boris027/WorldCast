@@ -4,4 +4,5 @@ export interface listPlaylist{
     group:string | null | undefined
     name: string | null | undefined
     url: string | null | undefined
+    type:string | null
 }

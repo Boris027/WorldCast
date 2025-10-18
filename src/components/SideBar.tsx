@@ -23,6 +23,27 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
         setvalueInput("")
     }
 
+    useEffect(() => {
+        
+        if(playlist.length>0 && playlist[0].type=="tv"){
+            (document.getElementById("input") as HTMLInputElement).placeholder = "Channel";
+        }else if(playlist.length>0 && playlist[0].type=="radio"){
+            (document.getElementById("input") as HTMLInputElement).placeholder = "Radio";
+        }else if(playlist.length>0){
+            (document.getElementById("input") as HTMLInputElement).placeholder = "News";
+        }
+    },[playlist])
+
+    function onclickitem(url:string,name:string,type:string){
+        if(type=="tv"){
+            onClickPlaylist(url,name)
+        }else if(type=="radio"){
+
+        }else if(type=="news"){
+            console.log(url+"sad")
+            window.open(url)
+        }
+    }
 
     return (
         <div style={{position:"fixed",zIndex:"100", right:"0px",width:"310px", height:"100%",overflowY:"scroll", backgroundColor:"#1A1C23", display:visibility}}>
@@ -70,7 +91,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
             <div id="channelcontainer">
                 {playlist.map((item:any,index:number)=>{
                     return <button key={item.name+";"+index} name={item.name} onClick={()=>{
-                        onClickPlaylist(item.url,item.name)
+                        onclickitem(item.url,item.name,playlist[0].type)
                     }} style={{display:"flex", margin:"0px",padding:"15px", alignItems:"center",gap:"10px"}}>
                         {channelLogos ? <img src={item.logo||null} style={{width:"60px", height:"60px"}}></img> : <img  src={`https://flagsapi.com/${subname}/flat/64.png`} style={{width:"60px", height:"60px"}}></img>}
                         <p style={{maxWidth:"250px"}}>{item.name}</p>

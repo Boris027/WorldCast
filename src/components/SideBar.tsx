@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import { listPlaylist } from "@/interfaces/listPlaylist";
-import { List } from "react-window";
 
 interface SidebarProps {
   playlist: listPlaylist[];
@@ -11,13 +10,14 @@ interface SidebarProps {
   subname:string,
   channelLogos:boolean,
   onClickAudio:(url:string,name:string) => void;
+  mode:string
 }
 
 
 
 
 
-const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,sidebarVisibility,country,subname,channelLogos,onClickAudio }:any) => {
+const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,sidebarVisibility,country,subname,channelLogos,onClickAudio,mode }:any) => {
     const [valueInput,setvalueInput]=useState<string>("")
 
     function clearinput(){
@@ -25,16 +25,17 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
     }
 
     useEffect(() => {
-        
-        if(playlist.length>0 && playlist[0].type=="tv"){
+        if(mode=="tv"){
             (document.getElementById("input") as HTMLInputElement).placeholder = "Channel";
-        }else if(playlist.length>0 && playlist[0].type=="radio"){
+        }else if(mode=="radio"){
             (document.getElementById("input") as HTMLInputElement).placeholder = "Radio";
-        }else if(playlist.length>0){
+        }else if(mode=="news"){
             (document.getElementById("input") as HTMLInputElement).placeholder = "News";
         }
+        
+        
         setvalueInput("")
-    },[playlist])
+    },[playlist,mode])
 
     function onclickitem(url:string,name:string,type:string){
         if(type=="tv"){
@@ -91,7 +92,8 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
 
             
             <div id="channelcontainer">
-                {playlist.map((item:any,index:number)=>{
+
+                {playlist[0]?.url && playlist.map((item:any,index:number)=>{
                     return <button key={item.name+";"+index} name={item.name} onClick={()=>{
                         onclickitem(item.url,item.name,playlist[0].type)
                     }} style={{display:"flex", margin:"0px",padding:"15px", alignItems:"center",gap:"10px"}}>

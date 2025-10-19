@@ -79,7 +79,6 @@ async function convertM3UtoJSON(url: string): Promise<listPlaylist[]> {
       });
     }
   }
-
   return channels;
 }
 

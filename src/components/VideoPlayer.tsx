@@ -6,8 +6,30 @@ import { plane } from "three/examples/jsm/Addons.js";
 interface VideoPlayerProps {
   url:any,
   nameplaylist:any
-  onClickClose: (url:any,name:string) => void; // callback from parent
 }
+
+function stopvideo(){
+  const video=(document.getElementById("videoplayer") as HTMLVideoElement)
+  if(video){
+    video.pause()
+  }
+  const videocontainer=(document.getElementById("videocontainer") as HTMLElement)
+  if(videocontainer){
+    videocontainer.style.display="none"
+  }
+}
+
+function playvideo(){
+  const radio=(document.getElementById("videoplayer") as HTMLVideoElement)
+  if(radio){
+    radio.autoplay=true
+  }
+  const videocontainer=(document.getElementById("videocontainer") as HTMLElement)
+  if(videocontainer){
+    videocontainer.style.display="block"
+  }
+}
+
 
 
 const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist }:any) => {
@@ -15,6 +37,11 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
 
   useEffect(() => {
     if (!url) return;
+    if(url && nameplaylist){
+      playvideo()
+    }else{
+      stopvideo()
+    }
 
     const video:any = videoRef.current;
     if (Hls.isSupported()) {
@@ -27,7 +54,7 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
       video.src = url;
       /*video.addEventListener("loadedmetadata", () => video.play());*/
     }
-  }, [url]);
+  }, [url,nameplaylist]);
 
   if(url==null){
     return;
@@ -36,12 +63,12 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
   
 
 
-  return <div style={{position: "absolute",top: "50%",left: "50%",transform: "translate(-50%, -50%)",backgroundColor:"#1A1C23",padding:"20px",borderRadius:"15px", zIndex:"101"}}>
+  return <div id="videocontainer"  style={{position: "absolute",top: "50%",left: "50%",transform: "translate(-50%, -50%)",backgroundColor:"#1A1C23",padding:"20px",borderRadius:"15px", zIndex:"101"}}>
     
     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingBottom:"15px"}}>
       <h1>{nameplaylist}</h1>
       <button type="button"  onClick={()=>{
-        onClickClose(null)}
+        stopvideo()}
         }>
         <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -49,7 +76,7 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
       </button>
     </div>
     
-    <video autoPlay ref={videoRef} controls width="720" height="400px" style={{maxWidth:"720", maxHeight:"400px",backgroundColor:"black"}} />
+    <video id="videoplayer" ref={videoRef} controls width="720" height="400px" style={{maxWidth:"720", maxHeight:"400px",backgroundColor:"black"}} />
   </div>
 };
 

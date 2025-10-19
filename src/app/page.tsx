@@ -24,6 +24,7 @@ export default function Home() {
     const mode=getModeFromUrl()
 
     //set the country in params
+    setMode(mode!)
     setCountry(country,subname)
     if(mode=="tv"){
       setPlaylist(await loadPlaylist(country))
@@ -43,11 +44,20 @@ export default function Home() {
 
   //when you click a playlist in the sidebar in the tv mode
   async function onClickPlaylist(url:any,name:string){
+
+    //to pause and hide the radio player
+    setCurrentUrlRadio(null)
+    setcurrentRadiolistname(null)
+    //to enable and reproduce the tv player
     setCurrentUrl(url);
     setcurrentPlaylistname(name)
   }
   //when you click a radio in the sidebar in the radio mode
   async function onClickAudio(url:any,name:string){
+    //to pause and hide the tv player
+    setCurrentUrl(null);
+    setcurrentPlaylistname(null)
+    //to enable and reproduce the radio player
     setCurrentUrlRadio(url)
     setcurrentRadiolistname(name)
   }
@@ -146,8 +156,8 @@ export default function Home() {
           <p>Loading globe...</p>
         )}
 
-        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage} onClickAudio={onClickAudio}></Sidebar>
-        <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname} onClickClose={onClickPlaylist}></VideoPlayer>
+        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage} onClickAudio={onClickAudio} mode={mode}></Sidebar>
+        <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname}></VideoPlayer>
         <AudioPlayer url={currentUrlRadio} nameplaylist={currentRadiolistname}></AudioPlayer>
         <TooglePanel TooglePanelchanges={TooglePanelchanges} mode={mode} changeMode={ChangeMode}></TooglePanel>
         

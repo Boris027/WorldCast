@@ -9,9 +9,14 @@ export async function findNews(country:string,countryname:string){
         return c.json()
         })
     }catch(c){
-        news=await fetch("https://api.gdeltproject.org/api/v2/doc/doc?query=sourceCountry:"+countryname+"&mode=ArtList&format=json&timespan=1000").then(c=>{
-        return c.json()
-        })
+        try{
+            news=await fetch("https://api.gdeltproject.org/api/v2/doc/doc?query=sourceCountry:"+countryname+"&mode=ArtList&format=json&timespan=1000").then(c=>{
+                return c.json()
+            })
+        }catch(x){
+            news=null
+        }
+        
     }
     
 
@@ -21,7 +26,7 @@ export async function findNews(country:string,countryname:string){
         })
         return finalnews
     }else{
-        return [{tvgId:"",logo:"",group:"",name:"",url:"",type:"news"}]
+        return [{tvgId:null,logo:null,group:null,name:null,url:null,type:"news"}]
     }
     
 

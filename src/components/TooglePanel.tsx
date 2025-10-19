@@ -60,7 +60,7 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMo
 
     
 
-    return <div style={{display:"flex",flexDirection:"column",gap:"10px", position:"fixed", bottom:"10px",left:"20px"}}>
+    return <div style={{display:"flex",flexDirection:"column",gap:"10px", position:"fixed", bottom:"20px",left:"20px"}}>
 
         
         <label className="inline-flex items-center cursor-pointer">
@@ -92,7 +92,7 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMo
             <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Transparent Country</span>
         </label>
 
-        <div className="w-max mx-auto mt-10">
+        <div className="w-max mx-auto mt-10" style={{margin:"auto"}}>
             <div className="flex rounded-full border border-gray-300 overflow-hidden">
                 
                 <button id="tv" className="toggle-btn px-6 py-2 bg-gray-200 text-gray-700 cursor-pointer" data-value="tv" onClick={c=>{

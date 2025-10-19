@@ -49,7 +49,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
     }
 
     return (
-        <div style={{position:"fixed",zIndex:"100", right:"0px",width:"310px", height:"100%",overflowY:"scroll", backgroundColor:"#1A1C23", display:visibility}}>
+        <div id="sidebar" style={{position:"fixed",zIndex:"100", right:"0px",width:"22%", height:"100%",overflowY:"scroll", backgroundColor:"#1A1C23", display:visibility}}>
 
             <div style={{display:"flex",padding:"10px", justifyContent:"space-between"}}>
 
@@ -70,7 +70,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
             </div>
             
             <div style={{display:"flex",justifyContent:"center"}}>
-                <input type="text" id="input" value={valueInput} placeholder="Channel" style={{borderColor:"white", backgroundColor:"#2E303B", borderRadius:"7px", margin:"auto", padding:"5px",}} onInput={x=>{
+                <input type="text" id="input" value={valueInput} placeholder="Channel" style={{borderColor:"white", backgroundColor:"#2E303B", borderRadius:"7px", margin:"auto", padding:"5px",width:"60%"}} onInput={x=>{
                     const content = (x.target as HTMLInputElement).value;
                     
                     const channelcontainer=document.getElementById("channelcontainer")

@@ -24,3 +24,24 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+#sidebar{
+}
+
+@media (max-width: 1300px) {
+  #sidebar {
+    width: 25%!important;
+  }
+}
+
+@media (max-width: 1000px) {
+  #sidebar {
+    width: 30%!important;
+  }
+}
+
+@media (max-width: 800px) {
+  #sidebar {
+    width: 100%!important;
+  }
+}

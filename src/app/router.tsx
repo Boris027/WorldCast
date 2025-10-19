@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
  * Reactive hook to manage the current mode and URL.
  */
 export function useMode(defaultMode = 'tv') {
-  if (typeof window === "undefined" ) return;
   const [mode, setMode] = useState(defaultMode);
 
   // Initialize mode from URL or default
@@ -59,7 +58,15 @@ export function setMode(newMode: string) {
 export function getModeFromUrl(defaultMode = 'tv') {
   if (typeof window === "undefined" ) return;
   const params = new URLSearchParams(window.location.search);
-  return params.get('mode') || defaultMode;
+  const finalmode= params.get('mode') || defaultMode;
+
+  if(params.get('mode')){
+    return finalmode
+  }else{
+    setMode(defaultMode)
+    return finalmode
+  }
+
 }
 
 /**

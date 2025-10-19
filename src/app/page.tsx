@@ -15,10 +15,10 @@ import { GetRadio } from "@/services/FindRadioCountry";
 import { getCountryFromUrl, getModeFromUrl, getSubnameCountryFromUrl, setCountry, setMode, useMode } from "./router";
 import AudioPlayer from "@/components/AudioPlayer";
 
-export default function Home() {
-
-  //initializate to tv
-  useMode()
+export default function Home() {  
+  useEffect(() => {
+    initializate()
+  }, [])
 
   async function getCountryPlaylists(country:string,subname:string){
     const mode=getModeFromUrl()
@@ -41,20 +41,21 @@ export default function Home() {
     //GetRadio(subname)
   }
 
+  //when you click a playlist in the sidebar in the tv mode
   async function onClickPlaylist(url:any,name:string){
     setCurrentUrl(url);
     setcurrentPlaylistname(name)
   }
-
+  //when you click a radio in the sidebar in the radio mode
   async function onClickAudio(url:any,name:string){
     setCurrentUrlRadio(url)
     setcurrentRadiolistname(name)
   }
-
+  //to hide or show the sidebar
   async function sidebarVisibility(state:string){
     setCurrentVisibility(state)
   }
-
+  //to scan an change things in the TooglPanel
   async function TooglePanelchanges(){
     if(GetWorldRotation()!=rotation){
       setrotation(!rotation)
@@ -68,7 +69,7 @@ export default function Home() {
       settransparency(!transparency)
     }
   }
-
+  //To change the mode between TV, RADIO, NEWS
   async function ChangeMode(modexd:string){
     if(modexd==mode) return;
     setMode(modexd)
@@ -82,8 +83,25 @@ export default function Home() {
     } 
   }
 
-  //playlist with all the channels
-  const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
+
+  function initializate(){
+
+    if(getModeFromUrl()==undefined){
+      setMode("tv")
+    }
+
+    const country=getCountryFromUrl()
+    const subnameCountry=getSubnameCountryFromUrl()
+    console.log(country+" "+subnameCountry)
+    if (typeof country === "string" && typeof subnameCountry==="string") {
+      
+      getCountryPlaylists(country,subnameCountry)
+
+    } 
+    
+  }
+  
+  
   //url which will be reproduced by the videoplayer
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   //url which will be reproduced by the radiooplayer
@@ -108,7 +126,8 @@ export default function Home() {
   const [transparency,settransparency]=useState<boolean | null>(GetTransparent())
   //Mode (tv,radio,news)
   const [mode,setCurrentmode]=useState<string>(getModeFromUrl()!)
-
+  //playlist with all the channels
+  const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
   
 
   return (

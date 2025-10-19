@@ -13,6 +13,7 @@ import TooglePanel from "@/components/TooglePanel";
 import { GetClouds, GetTransparent, GetWorldRotation } from "@/services/DataFromStorage";
 import { GetRadio } from "@/services/FindRadioCountry";
 import { getModeFromUrl, setMode, useMode } from "./router";
+import AudioPlayer from "@/components/AudioPlayer";
 
 export default function Home() {
 
@@ -40,6 +41,11 @@ export default function Home() {
   async function onClickPlaylist(url:any,name:string){
     setCurrentUrl(url);
     setcurrentPlaylistname(name)
+  }
+
+  async function onClickAudio(url:any,name:string){
+    setCurrentUrlRadio(url)
+    setcurrentRadiolistname(name)
   }
 
   async function sidebarVisibility(state:string){
@@ -70,8 +76,12 @@ export default function Home() {
   const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
   //url which will be reproduced by the videoplayer
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
+  //url which will be reproduced by the radiooplayer
+  const [currentUrlRadio, setCurrentUrlRadio] = useState<string | null>(null);
   //playlist name
   const [currentPlaylistname, setcurrentPlaylistname] = useState<string | null>(null);
+  //Radiolist name
+  const [currentRadiolistname, setcurrentRadiolistname] = useState<string | null>(null);
   //the sidebar visibility
   const [visibility,setCurrentVisibility]=useState<string>("none")
   //the name of the country selected
@@ -107,8 +117,9 @@ export default function Home() {
           <p>Loading globe...</p>
         )}
 
-        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage}></Sidebar>
+        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage} onClickAudio={onClickAudio}></Sidebar>
         <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname} onClickClose={onClickPlaylist}></VideoPlayer>
+        <AudioPlayer url={currentUrlRadio} nameplaylist={currentRadiolistname}></AudioPlayer>
         <TooglePanel TooglePanelchanges={TooglePanelchanges} mode={mode} changeMode={ChangeMode}></TooglePanel>
         
       </main>

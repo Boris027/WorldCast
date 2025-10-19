@@ -9,14 +9,15 @@ interface SidebarProps {
   sidebarVisibility: (state:string)=>void,
   country:string,
   subname:string,
-  channelLogos:boolean
+  channelLogos:boolean,
+  onClickAudio:(url:string,name:string) => void;
 }
 
 
 
 
 
-const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,sidebarVisibility,country,subname,channelLogos }:any) => {
+const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,sidebarVisibility,country,subname,channelLogos,onClickAudio }:any) => {
     const [valueInput,setvalueInput]=useState<string>("")
 
     function clearinput(){
@@ -38,7 +39,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
         if(type=="tv"){
             onClickPlaylist(url,name)
         }else if(type=="radio"){
-
+            onClickAudio(url,name)
         }else if(type=="news"){
             console.log(url+"sad")
             window.open(url)

@@ -20,6 +20,7 @@
     "radio-browser-api": "^6.0.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-player": "^3.3.3",
     "three": "^0.180.0"
   },
   "devDependencies": {

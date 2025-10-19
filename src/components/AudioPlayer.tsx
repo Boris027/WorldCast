@@ -44,7 +44,7 @@ const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist }:any) => {
 
 
     return <div id="audiocontainer"
-    style={{position: "absolute",top: "20px",left: "20px",backgroundColor:"#1A1C23",padding:"20px",borderRadius:"15px", zIndex:"101", display:"none"}}>
+    style={{position: "absolute",top: "20px",left: "20px",backgroundColor:"#1A1C23",boxShadow:"0 4px 12px rgba(0, 0, 0, 0.6)",padding:"20px",borderRadius:"15px", zIndex:"101", display:"none"}}>
 
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingBottom:"15px"}}>
           <h1>{nameplaylist}</h1>

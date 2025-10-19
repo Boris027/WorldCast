@@ -63,7 +63,7 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
   
 
 
-  return <div id="videocontainer"  style={{position: "absolute",top: "50%",left: "50%",transform: "translate(-50%, -50%)",backgroundColor:"#1A1C23",padding:"20px",borderRadius:"15px", zIndex:"101",width:"90%",maxWidth:"720px"}}>
+  return <div id="videocontainer"  style={{position: "absolute",top: "50%",left: "50%",transform: "translate(-50%, -50%)",backgroundColor:"#1A1C23",boxShadow:"0 4px 12px rgba(0, 0, 0, 0.6)",padding:"20px",borderRadius:"15px", zIndex:"101",width:"90%",maxWidth:"720px"}}>
     
     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingBottom:"15px"}}>
       <h1>{nameplaylist}</h1>

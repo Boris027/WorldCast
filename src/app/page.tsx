@@ -12,7 +12,7 @@ import * as Cesium from "cesium";
 import TooglePanel from "@/components/TooglePanel";
 import { GetClouds, GetTransparent, GetWorldRotation } from "@/services/DataFromStorage";
 import { GetRadio } from "@/services/FindRadioCountry";
-import { getModeFromUrl, setMode, useMode } from "./router";
+import { getCountryFromUrl, getModeFromUrl, getSubnameCountryFromUrl, setCountry, setMode, useMode } from "./router";
 import AudioPlayer from "@/components/AudioPlayer";
 
 export default function Home() {
@@ -22,6 +22,9 @@ export default function Home() {
 
   async function getCountryPlaylists(country:string,subname:string){
     const mode=getModeFromUrl()
+
+    //set the country in params
+    setCountry(country,subname)
     if(mode=="tv"){
       setPlaylist(await loadPlaylist(country))
     }else if(mode=="radio"){
@@ -70,6 +73,13 @@ export default function Home() {
     if(modexd==mode) return;
     setMode(modexd)
     setCurrentmode(modexd)
+
+    const country=getCountryFromUrl()
+    const subnameCountry=getSubnameCountryFromUrl()
+    console.log(country+" "+subnameCountry)
+    if (typeof country === "string" && typeof subnameCountry==="string") {
+      getCountryPlaylists(country, subnameCountry);
+    } 
   }
 
   //playlist with all the channels

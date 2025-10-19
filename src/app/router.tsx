@@ -61,3 +61,27 @@ export function getModeFromUrl(defaultMode = 'tv') {
   const params = new URLSearchParams(window.location.search);
   return params.get('mode') || defaultMode;
 }
+
+/**
+ * Standalone function to update the COuntry in URL without a component
+ */
+export function setCountry(newCountry: string,subname:string) {
+  if (typeof window === "undefined" ) return;
+  const params = new URLSearchParams(window.location.search);
+  params.set('country', newCountry+"-"+subname);
+
+  const newUrl = `${window.location.pathname}?${params.toString()}`;
+  window.history.replaceState({}, '', newUrl);
+}
+
+export function getCountryFromUrl():string | null | undefined {
+  if (typeof window === "undefined" ) return;
+  const params = new URLSearchParams(window.location.search);
+  return params.get('country')?.split("-")[0];
+}
+
+export function getSubnameCountryFromUrl():string | null | undefined {
+  if (typeof window === "undefined" ) return;
+  const params = new URLSearchParams(window.location.search);
+  return params.get('country')?.split("-")[1];
+}

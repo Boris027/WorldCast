@@ -33,6 +33,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
         }else if(playlist.length>0){
             (document.getElementById("input") as HTMLInputElement).placeholder = "News";
         }
+        setvalueInput("")
     },[playlist])
 
     function onclickitem(url:string,name:string,type:string){

@@ -43,7 +43,7 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
 
     (document.getElementById("videoplayer") as HTMLVideoElement).style.display="block";
     (document.getElementById("errorvideo") as HTMLElement).style.display="none";
-
+    (document.getElementById("youtubeplayer") as HTMLIFrameElement).src=""
     if(url && nameplaylist){
       playvideo()
     }else{
@@ -56,7 +56,7 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
       
       if (url.includes("youtube-nocookie.com")){
         const youtubeplayer=(document.getElementById("youtubeplayer") as HTMLIFrameElement)
-        youtubeplayer.src=url+"?autoplay=1"
+        youtubeplayer.src=url+"?autoplay=1&mute=0"
         youtubeplayer.style.display="block";
         (document.getElementById("videoplayer") as HTMLVideoElement).style.display="none";
       }else{
@@ -64,8 +64,12 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
         hls.loadSource(url);
 
         hls.on(Hls.Events.ERROR, (event, data) => {
-          (document.getElementById("videoplayer") as HTMLVideoElement).style.display="none";
-          (document.getElementById("errorvideo") as HTMLElement).style.display="flex";
+          console.log(data)
+          if (data.fatal) {
+            
+            (document.getElementById("videoplayer") as HTMLVideoElement).style.display="none";
+            (document.getElementById("errorvideo") as HTMLElement).style.display="flex";
+          }
         });
 
         hls.attachMedia(video);

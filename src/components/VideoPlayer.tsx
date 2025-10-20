@@ -10,8 +10,10 @@ interface VideoPlayerProps {
 
 function stopvideo(){
   const video=(document.getElementById("videoplayer") as HTMLVideoElement)
+  const videoyoutube=(document.getElementById("youtubeplayer") as HTMLIFrameElement)
   if(video){
     video.pause()
+    videoyoutube.src=""
   }
   const videocontainer=(document.getElementById("videocontainer") as HTMLElement)
   if(videocontainer){
@@ -34,6 +36,7 @@ function playvideo(){
 
 const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist }:any) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  let urlYoutube:string | undefined=undefined
 
   useEffect(() => {
     if (!url) return;
@@ -51,20 +54,27 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
     if (Hls.isSupported()) {
       const hls = new Hls();
       
-      
-      hls.loadSource(url);
-
-      hls.on(Hls.Events.ERROR, (event, data) => {
+      if (url.includes("youtube-nocookie.com")){
+        const youtubeplayer=(document.getElementById("youtubeplayer") as HTMLIFrameElement)
+        youtubeplayer.src=url+"?autoplay=1"
+        youtubeplayer.style.display="block";
         (document.getElementById("videoplayer") as HTMLVideoElement).style.display="none";
-        (document.getElementById("errorvideo") as HTMLElement).style.display="flex";
-      });
+      }else{
+        (document.getElementById("youtubeplayer") as HTMLIFrameElement).style.display="none"
+        hls.loadSource(url);
 
-      hls.attachMedia(video);
-    
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          (document.getElementById("videoplayer") as HTMLVideoElement).style.display="none";
+          (document.getElementById("errorvideo") as HTMLElement).style.display="flex";
+        });
+
+        hls.attachMedia(video);
       
-      
-      /*hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());*/
-      return () => hls.destroy();
+        
+        
+        /*hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());*/
+        return () => hls.destroy();
+      }
     } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = url;
       /*video.addEventListener("loadedmetadata", () => video.play());*/
@@ -94,9 +104,11 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
     
     <div id="videoplayercontainer" style={{maxWidth:"720",height:"400px"}}>
       <video id="videoplayer" ref={videoRef} controls style={{maxWidth:"720", height:"100%",backgroundColor:"black",width:"100%"}}/>
+      <iframe id="youtubeplayer" src={urlYoutube} style={{maxWidth:"720", height:"100%",backgroundColor:"black",width:"100%",display:"none"}}></iframe>
       <h1 id="errorvideo" style={{display:"none",height:"100%",alignItems:"center",justifyContent:"center"}}>Content no avaliable</h1>
     </div>
   </div>
+
 };
 
 export default VideoPlayer;

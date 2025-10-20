@@ -6,23 +6,32 @@ import { any } from "three/tsl";
 import metadata from "@/assets/datasets/countries_metadata.json"
 let finallist:listPlaylist[]=[]
 
-
+//function which loads the playlist
 export async function loadPlaylist(country:string,subname:string) {
   let lists
+  //check if the country is in the list and if it has channels, if it has it loads the channels from the directory
+  //if it doesnt work it uses the iptv api
   if(metadata.hasOwnProperty(subname)){
     const key = subname as keyof typeof metadata;
     const countryMetadata = metadata[key];
-    console.log(countryMetadata)
     if(countryMetadata.hasChannels){
       const moduleJSON = (await import(`@/assets/playlist/tv-tested/${subname.toLowerCase()}.json`)).default;
-      
-      lists=moduleJSON.map((c: { name: any; nanoid: any; iptv_urls:any[] })=>{
+      console.log(moduleJSON)
+      //map and return the checked channels
+      lists=moduleJSON.map((c: { name: any; nanoid: any; iptv_urls:any[]; youtube_urls:any[] })=>{
+        let finalurl
+        if(c.youtube_urls.length>0){
+          finalurl=c.youtube_urls[0]
+        }else{
+          finalurl=c.iptv_urls[0]
+        }
+
         return {
           name:c.name,
           tvgId:c.nanoid,
           logo: "",
           group: country,
-          url:c.iptv_urls[0],
+          url:finalurl,
           type:"tv"
         }
       })

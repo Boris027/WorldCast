@@ -10,11 +10,12 @@ import { useEffect, useState } from "react";
 import { findNews } from "@/services/FindNews";
 import * as Cesium from "cesium";
 import TooglePanel from "@/components/TooglePanel";
-import { GetClouds, GetTransparent, GetWorldRotation } from "@/services/DataFromStorage";
+import { GetClouds, GetTransparent, GetWelcomeMessage, GetWorldRotation, SetWelcomeMessage } from "@/services/DataFromStorage";
 import { GetRadio } from "@/services/FindRadioCountry";
 import { getCountryFromUrl, getModeFromUrl, getSubnameCountryFromUrl, setCountry, setMode, useMode } from "./router";
 import AudioPlayer from "@/components/AudioPlayer";
-
+import iconapp from "@/assets/images/iconapp.png"
+import WelcomeMessage from "@/components/WelcomeMessage";
 export default function Home() {  
   useEffect(() => {
     initializate()
@@ -93,8 +94,14 @@ export default function Home() {
     } 
   }
 
+  function AcceptWelcomeMessage(){
+    SetWelcomeMessage(true)
+    setwelcomemessageviewed(true)
+  }
+
 
   function initializate(){
+
 
     if(getModeFromUrl()==undefined){
       setMode("tv")
@@ -138,12 +145,17 @@ export default function Home() {
   const [mode,setCurrentmode]=useState<string>(getModeFromUrl()!)
   //playlist with all the channels
   const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
+  //it has the state true or false depending if we have accepted the welcome message
+  const [welcomemessageviewed,setwelcomemessageviewed] = useState<boolean>(GetWelcomeMessage());
   
 
   return (
     /*className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20"*/
     <div>
 
+      <img src={iconapp.src} style={{position:"absolute",zIndex:"100",width:"60px", left:"20px",top:"20px",cursor:"pointer"}} onClick={c=>{
+        window.location.reload()
+      }}></img>
       <main id="main" className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         {rotation !== null && clouds !== null && transparency !== null ? (
           <GlobeComponent
@@ -160,7 +172,7 @@ export default function Home() {
         <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname}></VideoPlayer>
         <AudioPlayer url={currentUrlRadio} nameplaylist={currentRadiolistname}></AudioPlayer>
         <TooglePanel TooglePanelchanges={TooglePanelchanges} mode={mode} changeMode={ChangeMode}></TooglePanel>
-        
+        <WelcomeMessage welcomemessageviewed={welcomemessageviewed} AcceptWelcomeMessage={AcceptWelcomeMessage}></WelcomeMessage>
       </main>
 
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">

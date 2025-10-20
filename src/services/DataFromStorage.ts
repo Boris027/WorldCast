@@ -52,3 +52,19 @@ export function GetTransparent():boolean{
     }
 
 }
+
+export function GetWelcomeMessage():boolean{
+    if (typeof window === "undefined") return true;
+    const transparent=localStorage.getItem("welcomemessage")
+    if(transparent!=undefined){
+        return JSON.parse(transparent)
+    }else{
+        SetTransparent(false)
+        return false;
+    }
+}
+
+export function SetWelcomeMessage(type:any){
+    if (typeof window === "undefined") return true;
+    localStorage.setItem("welcomemessage",type+"")
+}

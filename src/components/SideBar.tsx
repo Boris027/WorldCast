@@ -25,6 +25,13 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
     }
 
     useEffect(() => {
+        console.log(playlist)
+        if(playlist.length==0 || playlist[0].group==null){
+            (document.getElementById("nocontentavaliable") as HTMLElement).style.display="block"
+        }else{
+            (document.getElementById("nocontentavaliable") as HTMLElement).style.display="none"
+        }
+        
         if(mode=="tv"){
             (document.getElementById("input") as HTMLInputElement).placeholder = "Channel";
         }else if(mode=="radio"){
@@ -32,9 +39,10 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
         }else if(mode=="news"){
             (document.getElementById("input") as HTMLInputElement).placeholder = "News";
         }
-        
-        
         setvalueInput("")
+
+        
+
     },[playlist,mode])
 
     function onclickitem(url:string,name:string,type:string){
@@ -101,6 +109,8 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
                         <p style={{width:"100%"}}>{item.name}</p>
                         </button>
                 })}
+
+                <h1 id="nocontentavaliable" style={{display:"none",textAlign:"center"}}>No content avaliable</h1>
             </div>
             
         </div>

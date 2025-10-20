@@ -30,11 +30,26 @@ function playradio(){
   }
 }
 
+function error(){
+  const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
+  const errormessage=(document.getElementById("radioerrormessage") as HTMLElement)
+  if(radio && errormessage){
+    radio.style.display="none"
+    errormessage.style.display="flex"
+  }
+}
+
 
 
 const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist }:any) => {
 
   useEffect(() => {
+    const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
+    const errormessage=(document.getElementById("radioerrormessage") as HTMLElement)
+    if(radio && errormessage){
+      radio.style.display="block"
+      errormessage.style.display="none"
+    }
     if(url && nameplaylist){
       playradio()
     }else{
@@ -58,7 +73,10 @@ const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist }:any) => {
             </svg>
           </button>
         </div>
-        <audio id="radioplayer" src={url} autoPlay controls></audio>
+        <audio id="radioplayer" style={{width:"100%"}} src={url} autoPlay controls onError={c=>{
+          error()
+        }}></audio>
+        <h1 id="radioerrormessage" style={{display:"none",justifyContent:"center",alignItems:"center",width:"300px",height:"54px"}}>Radio not avaliable</h1>
     </div>
 }
 

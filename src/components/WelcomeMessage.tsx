@@ -10,7 +10,6 @@ const WelcomeMessage:React.FC<WelcomeMessageProps> = ({ welcomemessageviewed,Acc
 
     
     useEffect(()=> {
-        console.log("xd1")
         if(!welcomemessageviewed){
             (document.getElementById("welcomemessagecontainer") as HTMLElement).style.display="block"
         }else{

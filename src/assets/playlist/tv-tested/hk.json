@@ -1,0 +1,24 @@
+[
+  {
+    "nanoid": "U8Spauzn6l7tLZ",
+    "name": "Creation TV",
+    "iptv_urls": [
+      "https://cdn.deepcore.online/hlsme/ctv_hk.m3u8"
+    ],
+    "youtube_urls": [],
+    "language": "zho",
+    "country": "hk",
+    "isGeoBlocked": false
+  },
+  {
+    "nanoid": "3BsCNdHaOVE1Yl",
+    "name": "鳳凰資訊 PhoenixTVNews",
+    "iptv_urls": [],
+    "youtube_urls": [
+      "https://www.youtube-nocookie.com/embed/fN9uYWCjQaw"
+    ],
+    "language": "zho",
+    "country": "hk",
+    "isGeoBlocked": false
+  }
+]

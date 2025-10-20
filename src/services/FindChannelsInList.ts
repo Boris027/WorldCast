@@ -3,16 +3,41 @@ import { listPlaylist } from "@/interfaces/listPlaylist";
 import path from "path"; 
 import { useEffect, useState } from 'react';
 import { any } from "three/tsl";
-
+import metadata from "@/assets/datasets/countries_metadata.json"
 let finallist:listPlaylist[]=[]
 
 
-export async function loadPlaylist(country:string) {
-  let lists= await getPlayList(country)
+export async function loadPlaylist(country:string,subname:string) {
+  let lists
+  if(metadata.hasOwnProperty(subname)){
+    const key = subname as keyof typeof metadata;
+    const countryMetadata = metadata[key];
+    console.log(countryMetadata)
+    if(countryMetadata.hasChannels){
+      const moduleJSON = (await import(`@/assets/playlist/tv-tested/${subname.toLowerCase()}.json`)).default;
+      
+      lists=moduleJSON.map((c: { name: any; nanoid: any; iptv_urls:any[] })=>{
+        return {
+          name:c.name,
+          tvgId:c.nanoid,
+          logo: "",
+          group: country,
+          url:c.iptv_urls[0],
+          type:"tv"
+        }
+      })
+
+    }else{
+      lists= await getPlayList(country,subname)
+    }
+  }else{
+    lists= await getPlayList(country,subname)
+  }
+
   return lists
 }
 
-async function getPlayList(country:string){
+async function getPlayList(country:string,subname:String){
 
   if(country=="United States of America"){
     country="United States"
@@ -29,6 +54,7 @@ async function getPlayList(country:string){
   }
 
   if(Object.keys(finallist).length === 0){
+
     finallist=await convertM3UtoJSON("https://iptv-org.github.io/iptv/index.country.m3u")
     
   }

@@ -28,7 +28,7 @@ export default function Home() {
     setMode(mode!)
     setCountry(country,subname)
     if(mode=="tv"){
-      setPlaylist(await loadPlaylist(country))
+      setPlaylist(await loadPlaylist(country,subname))
     }else if(mode=="radio"){
       setPlaylist(await GetRadio(subname))
     }else if(mode=="news"){
@@ -88,7 +88,6 @@ export default function Home() {
 
     const country=getCountryFromUrl()
     const subnameCountry=getSubnameCountryFromUrl()
-    console.log(country+" "+subnameCountry)
     if (typeof country === "string" && typeof subnameCountry==="string") {
       getCountryPlaylists(country, subnameCountry);
     } 
@@ -109,7 +108,6 @@ export default function Home() {
 
     const country=getCountryFromUrl()
     const subnameCountry=getSubnameCountryFromUrl()
-    console.log(country+" "+subnameCountry)
     if (typeof country === "string" && typeof subnameCountry==="string") {
       
       getCountryPlaylists(country,subnameCountry)

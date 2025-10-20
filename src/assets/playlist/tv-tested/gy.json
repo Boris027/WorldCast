@@ -1,0 +1,13 @@
+[
+  {
+    "nanoid": "c2HqQBWO0k3xhn",
+    "name": "Ignite Television",
+    "iptv_urls": [
+      "https://rpn.bozztv.com/ignitelive/ignitetv/ignitetv/tracks-v1a1/mono.m3u8"
+    ],
+    "youtube_urls": [],
+    "language": "eng",
+    "country": "gy",
+    "isGeoBlocked": false
+  }
+]

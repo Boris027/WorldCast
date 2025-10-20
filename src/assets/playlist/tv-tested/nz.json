@@ -1,0 +1,69 @@
+[
+  {
+    "nanoid": "7GsqLCu38zi9PB",
+    "name": "Firstlight",
+    "iptv_urls": [
+      "https://uni01rtmp.tulix.tv/firstlight/firstlight.smil/playlist.m3u8"
+    ],
+    "youtube_urls": [],
+    "language": "eng",
+    "country": "nz",
+    "isGeoBlocked": false
+  },
+  {
+    "nanoid": "Dqgwi0HQE4Shzw",
+    "name": "Juice TV",
+    "iptv_urls": [
+      "https://juicex.nz/hls/mystream.m3u8"
+    ],
+    "youtube_urls": [],
+    "language": "eng",
+    "country": "nz",
+    "isGeoBlocked": false
+  },
+  {
+    "nanoid": "etg1QtG5OKYo2P",
+    "name": "Kordia TV",
+    "iptv_urls": [
+      "https://ptvlive.kordia.net.nz/out/v1/3fc2254c865a457c8d7fbbce227a2aae/index.m3u8"
+    ],
+    "youtube_urls": [],
+    "language": "eng",
+    "country": "nz",
+    "isGeoBlocked": false
+  },
+  {
+    "nanoid": "pGZdS7NMq1FAlR",
+    "name": "Parliament TV",
+    "iptv_urls": [
+      "https://ptvlive.kordia.net.nz/out/v1/daf20b9a9ec5449dadd734e50ce52b74/index.m3u8"
+    ],
+    "youtube_urls": [],
+    "language": "eng",
+    "country": "nz",
+    "isGeoBlocked": false
+  },
+  {
+    "nanoid": "yqNEGGubRnfXQA",
+    "name": "Rush NZ",
+    "iptv_urls": [],
+    "youtube_urls": [
+      "https://www.youtube-nocookie.com/embed/VTuc_sX4mB0"
+    ],
+    "language": "eng",
+    "country": "nz",
+    "isGeoBlocked": false
+  },
+  {
+    "nanoid": "1jOpKreG2aLlwA",
+    "name": "Wairarapa TV",
+    "iptv_urls": [
+      "https://stream.wairarapatv.co.nz/Broadband_High/playlist.m3u8",
+      "https://stream.wairarapatv.co.nz/Cellular_High/playlist.m3u8"
+    ],
+    "youtube_urls": [],
+    "language": "eng",
+    "country": "nz",
+    "isGeoBlocked": false
+  }
+]

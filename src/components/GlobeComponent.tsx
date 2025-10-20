@@ -98,8 +98,13 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
 
     // Handle resize
     const handleResize = () => {
-      globe.width([window.innerWidth]);
-      globe.height([window.innerHeight]);
+      //console.log(document.documentElement.clientWidth)
+      //globe.width([window.innerWidth]);
+      //globe.height([window.innerHeight]);
+
+      //this solves the incorrect value given by the window.innerwidth
+      globe.width(document.documentElement.clientWidth)
+      globe.height(document.documentElement.clientHeight)
     };
     window.addEventListener("resize", handleResize);
     handleResize();

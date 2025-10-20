@@ -54,10 +54,10 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
             <div style={{display:"flex",padding:"10px", justifyContent:"space-between"}}>
 
                 
-                <p style={{}}>{country}</p>
+                <p style={{display:"flex",alignItems:"center"}}>{country}</p>
                 
 
-                <button type="button"  onClick={()=>{
+                <button type="button" className="closebutton"  onClick={()=>{
                         sidebarVisibility("none")
                         clearinput()
                     }}>
@@ -70,7 +70,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
             </div>
             
             <div style={{display:"flex",justifyContent:"center"}}>
-                <input type="text" id="input" value={valueInput} placeholder="Channel" style={{borderColor:"white", backgroundColor:"#2E303B", borderRadius:"7px", margin:"auto", padding:"5px",width:"60%"}} onInput={x=>{
+                <input type="text" id="input" value={valueInput} placeholder="Channel" style={{borderColor:"white", backgroundColor:"#2E303B", borderRadius:"7px", margin:"auto", padding:"5px",width:"60%",marginBottom:"10px"}} onInput={x=>{
                     const content = (x.target as HTMLInputElement).value;
                     
                     const channelcontainer=document.getElementById("channelcontainer")
@@ -94,11 +94,11 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
             <div id="channelcontainer">
 
                 {playlist[0]?.url && playlist.map((item:any,index:number)=>{
-                    return <button key={item.name+";"+index} name={item.name} onClick={()=>{
+                    return <button className="listoption" key={item.name+";"+index} name={item.name} onClick={()=>{
                         onclickitem(item.url,item.name,playlist[0].type)
                     }} style={{display:"flex", margin:"0px",padding:"15px", alignItems:"center",gap:"10px"}}>
                         {channelLogos ? <img src={item.logo||null} style={{width:"60px", height:"60px"}}></img> : <img  src={`https://flagsapi.com/${subname}/flat/64.png`} style={{width:"60px", height:"60px"}}></img>}
-                        <p style={{maxWidth:"250px"}}>{item.name}</p>
+                        <p style={{width:"100%"}}>{item.name}</p>
                         </button>
                 })}
             </div>

@@ -32,11 +32,24 @@ body {
   #sidebar {
     width: 25%!important;
   }
+  #videocontainer{
+    left: 40%!important;
+  }
+}
+
+@media (max-width: 1250px){
+  #videocontainer{
+    top: 45%!important;
+  }
 }
 
 @media (max-width: 1000px) {
   #sidebar {
     width: 30%!important;
+  }
+  #videocontainer{
+    width: 60%!important;
+    left: 35%!important;
   }
 }
 
@@ -45,10 +58,33 @@ body {
     width: 100%!important;
   }
   #audiocontainer{
-    position: "absolute";
-    top: "50%";
-    left: "50%";
-    transform: "translate(-50%, -50%)"
+    position: absolute!important;
+    top: 50%!important;
+    left: 50%!important;
+    transform: translate(-50%, -50%)!important
+  }
+
+  #videocontainer{
+    top: 50%!important;
+    left: 50%!important;
+    width: 90%!important;
+
   }
 }
+.closebutton{
+  padding: 2px;
+}
+.closebutton:hover{
+  cursor: pointer;
+  background-color: #2E303B;
+  border-radius: 7px;
+}
+.listoption{
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
 
+.listoption:hover{
+  background-color: #2E303B;
+}

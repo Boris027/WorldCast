@@ -37,6 +37,10 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
 
   useEffect(() => {
     if (!url) return;
+
+    (document.getElementById("videoplayer") as HTMLVideoElement).style.display="block";
+    (document.getElementById("errorvideo") as HTMLElement).style.display="none";
+
     if(url && nameplaylist){
       playvideo()
     }else{
@@ -46,8 +50,19 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
     const video:any = videoRef.current;
     if (Hls.isSupported()) {
       const hls = new Hls();
+      
+      
       hls.loadSource(url);
+
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        (document.getElementById("videoplayer") as HTMLVideoElement).style.display="none";
+        (document.getElementById("errorvideo") as HTMLElement).style.display="flex";
+      });
+
       hls.attachMedia(video);
+    
+      
+      
       /*hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());*/
       return () => hls.destroy();
     } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
@@ -65,9 +80,9 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
 
   return <div id="videocontainer"  style={{position: "absolute",top: "50%",left: "50%",transform: "translate(-50%, -50%)",backgroundColor:"#1A1C23",boxShadow:"0 4px 12px rgba(0, 0, 0, 0.6)",padding:"20px",borderRadius:"15px", zIndex:"101",width:"90%",maxWidth:"720px"}}>
     
-    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingBottom:"15px"}}>
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"10px"}}>
       <h1>{nameplaylist}</h1>
-      <button type="button"  onClick={()=>{
+      <button type="button" className="closebutton" onClick={()=>{
         stopvideo()}
         }>
         <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -76,7 +91,11 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
       </button>
     </div>
     
-    <video id="videoplayer" ref={videoRef} controls width="720" height="400px" style={{maxWidth:"720", maxHeight:"400px",backgroundColor:"black"}} />
+    
+    <div id="videoplayercontainer" style={{maxWidth:"720",height:"400px"}}>
+      <video id="videoplayer" ref={videoRef} controls style={{maxWidth:"720", height:"100%",backgroundColor:"black",width:"100%"}}/>
+      <h1 id="errorvideo" style={{display:"none",height:"100%",alignItems:"center",justifyContent:"center"}}>Content no avaliable</h1>
+    </div>
   </div>
 };
 

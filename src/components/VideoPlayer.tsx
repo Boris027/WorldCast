@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from "react";
 import Hls from "hls.js";
-import { plane } from "three/examples/jsm/Addons.js";
 
 interface VideoPlayerProps {
   url:any,

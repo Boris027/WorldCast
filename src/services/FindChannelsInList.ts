@@ -1,8 +1,5 @@
 'use client';
 import { listPlaylist } from "@/interfaces/listPlaylist";
-import path from "path"; 
-import { useEffect, useState } from 'react';
-import { any } from "three/tsl";
 import metadata from "@/assets/datasets/countries_metadata.json"
 let finallist:listPlaylist[]=[]
 

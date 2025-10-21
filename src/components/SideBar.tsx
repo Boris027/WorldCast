@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { listPlaylist } from "@/interfaces/listPlaylist";
+import { GetCapital, GetTimeZone } from "@/services/DataFromStorage";
+import { DateTime } from "luxon";
 
 interface SidebarProps {
   playlist: listPlaylist[];
@@ -19,12 +21,28 @@ interface SidebarProps {
 
 const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,sidebarVisibility,country,subname,channelLogos,onClickAudio,mode }:any) => {
     const [valueInput,setvalueInput]=useState<string>("")
-
+    const [capital,setcapital]=useState<string>("")
+    const [time, setTime] = useState("99:99");
     function clearinput(){
         setvalueInput("")
     }
 
     useEffect(() => {
+        const capital=GetCapital(subname)
+        setcapital("")
+        setTime("99:99")
+        let interval: number | null = null; 
+        if(capital){
+            setcapital(capital)
+        }
+        const timezone=GetTimeZone(subname)
+        if (timezone) {
+            interval = window.setInterval(() => {
+            const now = DateTime.now().setZone(timezone); 
+            setTime(now.toFormat("HH:mm"));           
+            }, 1000);
+        }
+
         //console.log(playlist)
         if(playlist.length==0 || playlist[0].group==null){
             (document.getElementById("nocontentavaliable") as HTMLElement).style.display="block"
@@ -41,7 +59,9 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
         }
         setvalueInput("")
 
-        
+        return () => {
+            if (interval) clearInterval(interval);
+        };
 
     },[playlist,mode])
 
@@ -58,13 +78,9 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
 
     return (
         <div id="sidebar" style={{position:"fixed",zIndex:"100", right:"0px",width:"22%", height:"100%",overflowY:"scroll", backgroundColor:"#1A1C23", display:visibility}}>
-
-            <div style={{display:"flex",padding:"10px", justifyContent:"space-between"}}>
-
-                
-                <p style={{display:"flex",alignItems:"center"}}>{country}</p>
-                
-
+            
+            <div style={{display:"flex",padding:"10px", justifyContent:"space-between",paddingBottom:"0px"}}>
+                <p style={{fontSize:"22px",color:"#4EA8DE",}}>{time}</p>
                 <button type="button" className="closebutton"  onClick={()=>{
                         sidebarVisibility("none")
                         clearinput()
@@ -73,6 +89,14 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
+            </div>
+            <div style={{display:"flex",padding:"10px", justifyContent:"space-between",paddingTop:"0px"}}>
+
+                
+                <div style={{display:"flex",alignItems:"baseline",gap:"5px"}}>
+                    <p style={{fontSize:"22px",color:"#4EA8DE"}}>{country}</p>
+                    <p>{capital}</p>
+                </div>
 
                 
             </div>
@@ -118,3 +142,4 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
 }
 
 export default Sidebar
+

@@ -1,3 +1,5 @@
+import metadata from "@/assets/datasets/countries_metadata.json"
+
 export function SetWorldRotation(type:boolean){
     if (typeof window === "undefined") return true;
     localStorage.setItem("rotation",type+"")
@@ -67,4 +69,21 @@ export function GetWelcomeMessage():boolean{
 export function SetWelcomeMessage(type:any){
     if (typeof window === "undefined") return true;
     localStorage.setItem("welcomemessage",type+"")
+}
+
+
+export function GetCapital(subname:string){
+    if(metadata.hasOwnProperty(subname)){
+        const key = subname as keyof typeof metadata;
+        const countryMetadata = metadata[key];
+        return countryMetadata.capital
+    }
+}
+
+export function GetTimeZone(subname:string){
+    if(metadata.hasOwnProperty(subname)){
+        const key = subname as keyof typeof metadata;
+        const countryMetadata = metadata[key];
+        return countryMetadata.timeZone
+    }
 }

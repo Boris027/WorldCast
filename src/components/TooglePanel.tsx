@@ -6,9 +6,10 @@ interface TooglePanelProps {
   TooglePanelchanges: () => void; // callback from parent
   mode:string,
   changeMode:(mode:string)=>void
+  setaboutsectionenabled:(value:boolean)=>void
 }
 
-const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMode }:any)=>{
+const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMode,setaboutsectionenabled }:any)=>{
 
     const [checked, setChecked] = useState(false);
     const [checked2, setChecked2] = useState(false);
@@ -62,6 +63,27 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMo
 
     return <div style={{display:"flex",flexDirection:"column",gap:"10px", position:"fixed", bottom:"20px",left:"20px"}}>
 
+        <button style={{textAlign:"left",cursor:"pointer"}} onClick={c=>{
+            setaboutsectionenabled(true)
+            }}>
+            <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#4EA8DE"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="16" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+                <p>About</p>
+            </div>
+        </button>
         
         <label className="inline-flex items-center cursor-pointer">
             <input type="checkbox"  value="" className="sr-only peer" checked={checked} onChange={(e) => {

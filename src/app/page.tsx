@@ -8,7 +8,6 @@ import Sidebar from "@/components/SideBar";
 import { listPlaylist } from "@/interfaces/listPlaylist";
 import { useEffect, useState } from "react";
 import { findNews } from "@/services/FindNews";
-import * as Cesium from "cesium";
 import TooglePanel from "@/components/TooglePanel";
 import { GetClouds, GetTransparent, GetWelcomeMessage, GetWorldRotation, SetWelcomeMessage } from "@/services/DataFromStorage";
 import { GetRadio } from "@/services/FindRadioCountry";
@@ -16,6 +15,7 @@ import { getCountryFromUrl, getModeFromUrl, getSubnameCountryFromUrl, setCountry
 import AudioPlayer from "@/components/AudioPlayer";
 import iconapp from "@/assets/images/iconapp.png"
 import WelcomeMessage from "@/components/WelcomeMessage";
+import AboutComponent from "@/components/AboutComponent";
 export default function Home() {  
   useEffect(() => {
     initializate()
@@ -145,6 +145,8 @@ export default function Home() {
   const [playlist,setPlaylist] = useState<listPlaylist[]>([]);
   //it has the state true or false depending if we have accepted the welcome message
   const [welcomemessageviewed,setwelcomemessageviewed] = useState<boolean>(GetWelcomeMessage());
+  //it is true or false depending if you want to see the about section or not
+  const [aboutsectionenabled,setaboutsectionenabled] = useState<boolean>(false);
   
 
   return (
@@ -169,7 +171,8 @@ export default function Home() {
         <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage} onClickAudio={onClickAudio} mode={mode}></Sidebar>
         <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname}></VideoPlayer>
         <AudioPlayer url={currentUrlRadio} nameplaylist={currentRadiolistname}></AudioPlayer>
-        <TooglePanel TooglePanelchanges={TooglePanelchanges} mode={mode} changeMode={ChangeMode}></TooglePanel>
+        <TooglePanel TooglePanelchanges={TooglePanelchanges} mode={mode} changeMode={ChangeMode} setaboutsectionenabled={setaboutsectionenabled}></TooglePanel>
+        <AboutComponent aboutsectionenabled={aboutsectionenabled} setaboutsectionenabled={setaboutsectionenabled}></AboutComponent>
         <WelcomeMessage welcomemessageviewed={welcomemessageviewed} AcceptWelcomeMessage={AcceptWelcomeMessage}></WelcomeMessage>
       </main>
 

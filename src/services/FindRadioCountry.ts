@@ -1,7 +1,3 @@
-import { RadioBrowserApi, StationSearchType } from 'radio-browser-api'
-
-const api = new RadioBrowserApi('My Radio App')
-
 const serversbackup=[
   {
     "ip": "2a01:4f9:c012:3620::1",

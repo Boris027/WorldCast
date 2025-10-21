@@ -25,7 +25,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
     }
 
     useEffect(() => {
-        console.log(playlist)
+        //console.log(playlist)
         if(playlist.length==0 || playlist[0].group==null){
             (document.getElementById("nocontentavaliable") as HTMLElement).style.display="block"
         }else{
@@ -51,7 +51,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
         }else if(type=="radio"){
             onClickAudio(url,name)
         }else if(type=="news"){
-            console.log(url+"sad")
+            //console.log(url+"sad")
             window.open(url)
         }
     }

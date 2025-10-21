@@ -63,7 +63,7 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
         hls.loadSource(url);
 
         hls.on(Hls.Events.ERROR, (event, data) => {
-          console.log(data)
+          //console.log(data)
           if (data.fatal) {
             
             (document.getElementById("videoplayer") as HTMLVideoElement).style.display="none";

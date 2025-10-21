@@ -25,7 +25,7 @@ export async function findNews(country:string,countryname:string){
         const finalnews=news.articles.map((c:any)=>{
             return {tvgId:c.domain,logo:c.socialimage,group:c.sourcecountry,name:c.title,url:c.url,type:"news"}
         })
-        console.log(finalnews)
+        //console.log(finalnews)
         return finalnews
     }else{
         return [{tvgId:null,logo:null,group:null,name:null,url:null,type:"news"}]

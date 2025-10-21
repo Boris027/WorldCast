@@ -13,7 +13,7 @@ export async function loadPlaylist(country:string,subname:string) {
     const countryMetadata = metadata[key];
     if(countryMetadata.hasChannels){
       const moduleJSON = (await import(`@/assets/playlist/tv-tested/${subname.toLowerCase()}.json`)).default;
-      console.log(moduleJSON)
+      //console.log(moduleJSON)
       //map and return the checked channels
       lists=moduleJSON.map((c: { name: any; nanoid: any; iptv_urls:any[]; youtube_urls:any[] })=>{
         let finalurl

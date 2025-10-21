@@ -2,6 +2,8 @@
   <img src="./src/assets/images/iconapp.png" alt="App icon" width="150" height="150" />
 </p>
 
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
 # WorldCast 🌎📻📺
 
 WorldCast brings the **world of radio, TV, and news** right to your fingertips — all for free. Explore live content from every corner of the globe with an intuitive, interactive interface.

@@ -104,7 +104,7 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMo
             <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Clouds</span>
         </label>
 
-        <label className="inline-flex items-center cursor-pointer" style={{pointerEvents:"auto"}}>
+        <label className="inline-flex items-center cursor-pointer" style={{pointerEvents:"auto",display:"none"}}>
             <input disabled type="checkbox"  value="" className="sr-only peer" checked={checked3} onChange={(e) => {
                 setChecked3(e.target.checked)
                 SetTransparent(e.target.checked)

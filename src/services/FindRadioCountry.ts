@@ -29,7 +29,9 @@ export async function GetRadio(countrycode:string){
     let stations
     const endpoint=`/json/stations/search?countrycode=${countrycode}&limit=100&offset=0&hidebroken=true`
     try {
-        const servers=await (await fetch("https://all.api.radio-browser.info/json/servers")).json()
+        //const servers=await (await fetch("https://all.api.radio-browser.info/json/servers")).json()
+        const url="https://all.api.radio-browser.info/json/servers"
+        const servers=await (await fetch(`/api/proxy?url=${encodeURIComponent(url)}`)).json()
         //stations = await api.searchStations({
         //countryCode: countrycode,
         //limit: 100,

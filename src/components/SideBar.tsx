@@ -77,7 +77,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
     }
 
     return (
-        <div id="sidebar" style={{position:"fixed",zIndex:"100", right:"0px",width:"22%", height:"100%",overflowY:"scroll", backgroundColor:"#1A1C23", display:visibility}}>
+        <div id="sidebar" style={{position:"fixed",zIndex:"100", right:"0px",width:"22%", height:"100%",overflowY:"scroll",overflowX:"hidden", backgroundColor:"#1A1C23", display:visibility}}>
             
             <div style={{display:"flex",padding:"10px", justifyContent:"space-between",paddingBottom:"0px"}}>
                 <p style={{fontSize:"22px",color:"#4EA8DE",}}>{time}</p>

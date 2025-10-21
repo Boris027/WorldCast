@@ -60,9 +60,9 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMo
 
     
 
-    return <div style={{display:"flex",flexDirection:"column",gap:"10px", position:"fixed", bottom:"20px",left:"20px"}}>
+    return <div style={{display:"flex",flexDirection:"column",gap:"10px", position:"fixed", bottom:"20px",left:"20px",alignItems:"flex-start"}}>
 
-        <button style={{textAlign:"left",cursor:"pointer"}} onClick={c=>{
+        <button style={{textAlign:"left",cursor:"pointer",alignSelf: "flex-start"}} onClick={c=>{
             setaboutsectionenabled(true)
             }}>
             <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
@@ -80,7 +80,7 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMo
                     <line x1="12" y1="16" x2="12" y2="12" />
                     <line x1="12" y1="8" x2="12.01" y2="8" />
                 </svg>
-                <p>About</p>
+                <p style={{display:"inline"}}>About</p>
             </div>
         </button>
         

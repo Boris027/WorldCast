@@ -107,7 +107,7 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist 
     
     <div id="videoplayercontainer" style={{maxWidth:"720",height:"400px"}}>
       <video id="videoplayer" ref={videoRef} controls style={{maxWidth:"720", height:"100%",backgroundColor:"black",width:"100%"}}/>
-      <iframe id="youtubeplayer" src={urlYoutube} style={{maxWidth:"720", height:"100%",backgroundColor:"black",width:"100%",display:"none"}}></iframe>
+      <iframe allowFullScreen id="youtubeplayer" src={urlYoutube}  style={{maxWidth:"720", height:"100%",backgroundColor:"black",width:"100%",display:"none"}}></iframe>
       <h1 id="errorvideo" style={{display:"none",height:"100%",alignItems:"center",justifyContent:"center"}}>Content no avaliable</h1>
     </div>
   </div>

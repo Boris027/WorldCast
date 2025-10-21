@@ -43,8 +43,8 @@ WorldCast aggregates content from trusted third-party sources:
 Have feedback, questions, or want to say hi? You can reach me at:  
 
 - **Email:** [borisgallegorios05@gmail.com](borisgallegorios05@gmail.com)  
-- **GitHub:** [Boris027](https://github.com/Boris027)  
-- **LinkedIn:** [BGallegoRios](https://www.linkedin.com/in/bgallegorios/)  
+- **GitHub:** [boris027](https://github.com/Boris027)  
+- **LinkedIn:** [bgallegorios](https://www.linkedin.com/in/bgallegorios/)  
 
 ---
 

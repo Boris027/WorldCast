@@ -43,7 +43,7 @@ export async function loadPlaylist(country:string,subname:string) {
   return lists
 }
 
-async function getPlayList(country:string,subname:String){
+async function getPlayList(country:string,subname:string){
 
   if(country=="United States of America"){
     country="United States"

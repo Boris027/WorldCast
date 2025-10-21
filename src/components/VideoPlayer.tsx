@@ -35,7 +35,7 @@ function playvideo(){
 
 const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist }:any) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  let urlYoutube:string | undefined=undefined
+  const urlYoutube:string | undefined=undefined
 
   useEffect(() => {
     if (!url) return;

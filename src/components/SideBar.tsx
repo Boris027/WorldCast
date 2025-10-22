@@ -149,7 +149,15 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
                                 const svg = c.currentTarget.querySelector("svg polygon");
                                 if(response==1 && svg){
                                     svg.setAttribute("fill", "#4EA8DE");
-                                }else if(response==-1 && svg){
+                                }else if(response==-1 && svg && mode=="favorites"){
+                                    svg.setAttribute("fill", "none"); // Remove fill
+                                    const button = c.currentTarget.closest("button");
+                                    if (button) {
+                                        (button as HTMLElement).style.display = "none";
+                                    }
+                                    
+                                }
+                                else if(response==-1 && svg){
                                     svg.setAttribute("fill", "none"); // Remove fill
                                 }
 

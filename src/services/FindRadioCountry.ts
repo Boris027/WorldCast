@@ -37,7 +37,6 @@ export async function GetRadio(countrycode:string){
         //limit: 100,
         //offset: 0 // this is the default - can be omited
         //})    
-
         for(const server of servers){
             try {
                 stations=await (await fetch("https://"+server.name+endpoint)).json()
@@ -69,11 +68,11 @@ export async function GetRadio(countrycode:string){
 
     if(stations!=undefined){
         const final=stations.map((c: { changeId: any; favicon: any; country: any; name: any; url: any })=>{
-            return {tvgId:c.changeId,logo:c.favicon,group:c.country,name:c.name,url:c.url,type:"radio"}
+            return {tvgId:c.changeId,logo:c.favicon,group:c.country,name:c.name,url:c.url,type:"radio",region:countrycode}
         })
         return final;
     }else{
-        return [{tvgId:null,logo:null,group:null,name:null,url:null,type:"radio"}]
+        return []
     }
     
 

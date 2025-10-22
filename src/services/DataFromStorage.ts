@@ -1,4 +1,5 @@
 import metadata from "@/assets/datasets/countries_metadata.json"
+import { stringify } from "querystring";
 
 export function SetWorldRotation(type:boolean){
     if (typeof window === "undefined") return true;
@@ -85,5 +86,58 @@ export function GetTimeZone(subname:string){
         const key = subname as keyof typeof metadata;
         const countryMetadata = metadata[key];
         return countryMetadata.timeZone
+    }
+}
+
+export function SetFavoriteChannels(name:string,channelurl:string,type:string,countrysubname:string){
+    if (typeof window === "undefined") return true;
+    const content=GetFavoriteChannels()
+    content.push({name:name,url:channelurl,type:type,region:countrysubname,favorite:true})
+    localStorage.setItem("favoritechannels",JSON.stringify(content))
+}
+
+export function RemoveFavoriteChannel(name:string){
+    if (typeof window === "undefined") return true;
+    const content=GetFavoriteChannels()
+    const newcontent=content.filter((c: { name: any; })=>{return c.name!=name})
+    localStorage.setItem("favoritechannels",JSON.stringify(newcontent))
+}
+
+export function GetFavoriteChannels(){
+    if (typeof window === "undefined") return true;
+
+    const content=localStorage.getItem("favoritechannels")
+    if(content!=null && content!="" && content!=undefined){
+        return JSON.parse(content);
+    }else{
+        localStorage.setItem("favoritechannels",JSON.stringify([]))
+        return []
+    }
+}
+
+
+export function SetFavoriteRadios(name:string,channelurl:string,iconurl:string,type:string,countrysubname:string){
+    if (typeof window === "undefined") return true;
+    const content=GetFavoriteRadios()
+    content.push({name:name,url:channelurl,icon:iconurl,type:type,favorite:true,region:countrysubname})
+    localStorage.setItem("favoriteradios",JSON.stringify(content))
+}
+
+export function RemoveFavoriteRadio(name:string){
+    if (typeof window === "undefined") return true;
+    const content=GetFavoriteRadios()
+    const newcontent=content.filter((c: { name: any; })=>{return c.name!=name})
+    localStorage.setItem("favoriteradios",JSON.stringify(newcontent))
+}
+
+export function GetFavoriteRadios(){
+    if (typeof window === "undefined") return true;
+
+    const content=localStorage.getItem("favoriteradios")
+    if(content!=null && content!="" && content!=undefined){
+        return JSON.parse(content);
+    }else{
+        localStorage.setItem("favoriteradios",JSON.stringify([]))
+        return []
     }
 }

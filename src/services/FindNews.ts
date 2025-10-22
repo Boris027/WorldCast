@@ -23,12 +23,13 @@ export async function findNews(country:string,countryname:string){
 
     if(news?.articles && Array.isArray(news.articles)){
         const finalnews=news.articles.map((c:any)=>{
-            return {tvgId:c.domain,logo:c.socialimage,group:c.sourcecountry,name:c.title,url:c.url,type:"news"}
+
+            return {tvgId:c.domain,logo:c.socialimage,group:c.sourcecountry,name:c.title,url:c.url,type:"news",region:country}
         })
         //console.log(finalnews)
         return finalnews
     }else{
-        return [{tvgId:null,logo:null,group:null,name:null,url:null,type:"news"}]
+        return []
     }
     
 

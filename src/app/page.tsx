@@ -9,7 +9,7 @@ import { listPlaylist } from "@/interfaces/listPlaylist";
 import { useEffect, useState } from "react";
 import { findNews } from "@/services/FindNews";
 import TooglePanel from "@/components/TooglePanel";
-import { GetClouds, GetTransparent, GetWelcomeMessage, GetWorldRotation, SetWelcomeMessage } from "@/services/DataFromStorage";
+import { GetClouds, GetFavoriteChannels, GetTransparent, GetWelcomeMessage, GetWorldRotation, RemoveFavoriteChannel, SetFavoriteChannels, SetWelcomeMessage } from "@/services/DataFromStorage";
 import { GetRadio } from "@/services/FindRadioCountry";
 import { getCountryFromUrl, getModeFromUrl, getSubnameCountryFromUrl, setCountry, setMode, useMode } from "./router";
 import AudioPlayer from "@/components/AudioPlayer";
@@ -17,26 +17,54 @@ import iconapp from "@/assets/images/iconapp.png"
 import WelcomeMessage from "@/components/WelcomeMessage";
 import AboutComponent from "@/components/AboutComponent";
 export default function Home() {  
+
   useEffect(() => {
     initializate()
   }, [])
 
   async function getCountryPlaylists(country:string,subname:string){
     const mode=getModeFromUrl()
-
+    console.log(mode)
     //set the country in params
     setMode(mode!)
-    setCountry(country,subname)
+    if(mode!="favorites"){
+     setCountry(country,subname) 
+    }
+
+    
     if(mode=="tv"){
-      setPlaylist(await loadPlaylist(country,subname))
+      const playlist=await loadPlaylist(country,subname)
+      const favoriteplaylist=GetFavoriteChannels()
+
+      playlist.map((c: { name: any; favorite: boolean; })=>{
+        const channel=favoriteplaylist.find((x: { name: any; })=>x.name==c.name)
+        if(channel){
+          c.favorite=true;
+          return c;
+        }else{
+          c.favorite=false;
+          return c;
+        }
+      })
+
+      setPlaylist(playlist)
     }else if(mode=="radio"){
       setPlaylist(await GetRadio(subname))
     }else if(mode=="news"){
       setPlaylist(await findNews(subname,country))
+    }else if(mode=="favorites"){
+      console.log("favorites xdd")
+      ChangeMode("favorites")
+      setCurrentcountry("")
+      setPlaylist(GetFavoriteChannels())
     }
-    setCurrentcountry(country)
+
+    if(mode!="favorites"){
+     setCurrentcountry(country)
+     setsubname(subname)
+    }
+    
     setshowchannelsimage(false)
-    setsubname(subname)
     sidebarVisibility("block")
     //findNews(country)
 
@@ -82,7 +110,11 @@ export default function Home() {
   }
   //To change the mode between TV, RADIO, NEWS
   async function ChangeMode(modexd:string){
-    if(modexd==mode) return;
+    //if(modexd==mode) return;
+    if(getModeFromUrl()=="favorites"){
+      setCurrentVisibility("none")
+      setCountry("","")
+    }
     setMode(modexd)
     setCurrentmode(modexd)
 
@@ -98,10 +130,40 @@ export default function Home() {
     setwelcomemessageviewed(true)
   }
 
+  function clickopenfavorites(){
+    setMode("favorites")
+    setCountry("","")
+    setsubname("")
+    setCurrentcountry("")
+    getCountryPlaylists("","")
+  }
+
+  function AddElementToFavorites(name:string,url:string,type:string,region:string){
+    if(type=="tv"){
+
+      const channels=GetFavoriteChannels()
+
+      const exists = channels.some((c: { name: string }) => c.name === name);
+      if (exists) {
+        RemoveFavoriteChannel(name);
+        return -1
+      }else{
+        SetFavoriteChannels(name,url,type,region)
+        return 1;
+      }
+
+
+      
+    }else if(type=="radio"){
+
+    }
+
+  }
+
 
   function initializate(){
 
-
+    
     if(getModeFromUrl()==undefined){
       setMode("tv")
     }
@@ -109,12 +171,14 @@ export default function Home() {
     const country=getCountryFromUrl()
     const subnameCountry=getSubnameCountryFromUrl()
     if (typeof country === "string" && typeof subnameCountry==="string") {
-      
       getCountryPlaylists(country,subnameCountry)
-
-    } 
-    
+    } else{
+      getCountryPlaylists("","")
+    }
   }
+
+
+
   
   
   //url which will be reproduced by the videoplayer
@@ -168,10 +232,10 @@ export default function Home() {
           <p>Loading globe...</p>
         )}
 
-        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage} onClickAudio={onClickAudio} mode={mode}></Sidebar>
+        <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage} onClickAudio={onClickAudio} mode={mode} AddElementToFavorites={AddElementToFavorites}></Sidebar>
         <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname}></VideoPlayer>
         <AudioPlayer url={currentUrlRadio} nameplaylist={currentRadiolistname}></AudioPlayer>
-        <TooglePanel TooglePanelchanges={TooglePanelchanges} mode={mode} changeMode={ChangeMode} setaboutsectionenabled={setaboutsectionenabled}></TooglePanel>
+        <TooglePanel TooglePanelchanges={TooglePanelchanges} mode={mode} changeMode={ChangeMode} setaboutsectionenabled={setaboutsectionenabled} clickopenfavorites={clickopenfavorites}></TooglePanel>
         <AboutComponent aboutsectionenabled={aboutsectionenabled} setaboutsectionenabled={setaboutsectionenabled}></AboutComponent>
         <WelcomeMessage welcomemessageviewed={welcomemessageviewed} AcceptWelcomeMessage={AcceptWelcomeMessage}></WelcomeMessage>
       </main>

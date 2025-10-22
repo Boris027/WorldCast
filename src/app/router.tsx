@@ -12,7 +12,7 @@ export function useMode(defaultMode = 'tv') {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const m: string | null = params.get("mode");
-    if (m=="tv" || m=="radio" || m=="news") {
+    if (m=="tv" || m=="radio" || m=="news" || m=="favorites") {
       setMode(m);
     } else {
       // Set default mode in URL if not present
@@ -75,7 +75,11 @@ export function getModeFromUrl(defaultMode = 'tv') {
 export function setCountry(newCountry: string,subname:string) {
   if (typeof window === "undefined" ) return;
   const params = new URLSearchParams(window.location.search);
-  params.set('country', newCountry+"-"+subname);
+  if(newCountry=="" && subname==""){
+    params.delete("country")
+  }else{
+    params.set('country', newCountry+"-"+subname);
+  }
 
   const newUrl = `${window.location.pathname}?${params.toString()}`;
   window.history.replaceState({}, '', newUrl);

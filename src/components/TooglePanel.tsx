@@ -6,9 +6,10 @@ interface TooglePanelProps {
   mode:string,
   changeMode:(mode:string)=>void
   setaboutsectionenabled:(value:boolean)=>void
+  clickopenfavorites:()=>void
 }
 
-const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMode,setaboutsectionenabled }:any)=>{
+const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMode,setaboutsectionenabled,clickopenfavorites }:any)=>{
 
     const [checked, setChecked] = useState(false);
     const [checked2, setChecked2] = useState(false);
@@ -48,24 +49,48 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMo
             document.getElementById("tv")?.classList.replace("text-white","text-gray-700")
             document.getElementById("radio")?.classList.replace("bg-blue-500","bg-gray-200")
             document.getElementById("radio")?.classList.replace("text-white","text-gray-700")
+        }else if(modexd=="favorites"){
+            document.getElementById("news")?.classList.replace("bg-blue-500","bg-gray-200")
+            document.getElementById("news")?.classList.replace("text-white","text-gray-700")
+            document.getElementById("tv")?.classList.replace("bg-blue-500","bg-gray-200")
+            document.getElementById("tv")?.classList.replace("text-white","text-gray-700")
+            document.getElementById("radio")?.classList.replace("bg-blue-500","bg-gray-200")
+            document.getElementById("radio")?.classList.replace("text-white","text-gray-700")
         }
         
     }
-
-    const buttons = [
-        { label: 'TV', value: 'tv' },
-        { label: 'Radio', value: 'radio' },
-        { label: 'News', value: 'news' },
-    ];
 
     
 
     return <div style={{display:"flex",flexDirection:"column",gap:"10px", position:"fixed", bottom:"20px",left:"20px",alignItems:"flex-start",pointerEvents:"none"}}>
 
         <button style={{textAlign:"left",cursor:"pointer",alignSelf: "flex-start",pointerEvents:"auto"}} onClick={c=>{
+            clickopenfavorites()
+            changeActivation("favorites")
+            }}>
+            <div style={{display:"flex",alignItems:"end",gap:"10px"}}>
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#4EA8DE"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                >
+                <polygon points="12 2 15 11 23 11 17 16 19 24 12 19 5 24 7 16 1 11 9 11" />
+                </svg>
+
+                <p style={{display:"inline"}}>Favorites</p>
+            </div>
+        </button>
+
+        <button style={{textAlign:"left",cursor:"pointer",alignSelf: "flex-start",pointerEvents:"auto"}} onClick={c=>{
             setaboutsectionenabled(true)
             }}>
-            <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
+            <div style={{display:"flex",alignItems:"end",gap:"10px"}}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="28"

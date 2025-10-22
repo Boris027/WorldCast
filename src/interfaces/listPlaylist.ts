@@ -5,4 +5,5 @@ export interface listPlaylist{
     name: string | null | undefined
     url: string | null | undefined
     type:string | null
+    region:string | null | undefined
 }

@@ -92,3 +92,6 @@ body {
   background-color: #2E303B;
 }
 
+.starfavorites polygon:hover {
+  fill: #4EA8DE;        /* fills with stroke color on hover */
+}

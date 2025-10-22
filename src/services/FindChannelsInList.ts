@@ -29,7 +29,8 @@ export async function loadPlaylist(country:string,subname:string) {
           logo: "",
           group: country,
           url:finalurl,
-          type:"tv"
+          type:"tv",
+          region:subname
         }
       })
 
@@ -61,7 +62,7 @@ async function getPlayList(country:string,subname:string){
 
   if(Object.keys(finallist).length === 0){
 
-    finallist=await convertM3UtoJSON("https://iptv-org.github.io/iptv/index.country.m3u")
+    finallist=await convertM3UtoJSON("https://iptv-org.github.io/iptv/index.country.m3u",subname)
     
   }
 
@@ -72,7 +73,7 @@ async function getPlayList(country:string,subname:string){
 
 
 
-async function convertM3UtoJSON(url: string): Promise<listPlaylist[]> {
+async function convertM3UtoJSON(url: string,subname:string): Promise<listPlaylist[]> {
   const res = await fetch(url);
   const text = await res.text();
   const lines = text.split('\n');
@@ -107,41 +108,10 @@ async function convertM3UtoJSON(url: string): Promise<listPlaylist[]> {
         logo: logoMatch ? logoMatch[1] : null,
         group: groupMatch ? groupMatch[1] : null,
         url,
-        type:"tv"
+        type:"tv",
+        region:subname
       });
     }
   }
   return channels;
 }
-
-async function convertM3UtoJSON1(url:string):Promise<listPlaylist[]> {
-  const res = await fetch(url);
-  const text = await res.text();
-  const lines = text.split('\n');
-
-  const channels = [];
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
-
-    if (line.startsWith('#EXTINF')) {
-      const nameMatch = line.match(/,(.*)$/);
-      const name = nameMatch ? nameMatch[1].trim() : 'Unknown';
-      const tvgIdMatch = line.match(/tvg-id="(.*?)"/);
-      const logoMatch = line.match(/tvg-logo="(.*?)"/);
-      const groupMatch = line.match(/group-title="(.*?)"/);
-      const url = lines[i + 1]?.trim();
-
-      channels.push({
-        name,
-        tvgId: tvgIdMatch ? tvgIdMatch[1] : null,
-        logo: logoMatch ? logoMatch[1] : null,
-        group: groupMatch ? groupMatch[1] : null,
-        url,
-        type:"tv"
-      });
-    }
-  }
-  return channels;
-}
-

@@ -135,7 +135,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
 
                 {playlist[0]?.url && playlist.map((item:any,index:number)=>{
                     return <button className="listoption" key={item.name+";"+index} name={item.name} onClick={()=>{
-                        onclickitem(item.url,item.name,playlist[0].type)
+                        onclickitem(item.url,item.name,item.type)
                     }} style={{display:"flex", margin:"0px",padding:"15px", alignItems:"center",gap:"10px"}}>
                         {channelLogos ? <img src={item.logo||null} style={{width:"60px", height:"60px"}}></img> : <img  src={`https://flagsapi.com/${item.region}/flat/64.png`} style={{width:"60px", height:"60px"}}></img>}
                         <p style={{width:"100%"}}>{item.name}</p>

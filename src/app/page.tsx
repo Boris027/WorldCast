@@ -9,7 +9,7 @@ import { listPlaylist } from "@/interfaces/listPlaylist";
 import { useEffect, useState } from "react";
 import { findNews } from "@/services/FindNews";
 import TooglePanel from "@/components/TooglePanel";
-import { GetClouds, GetFavoriteChannels, GetTransparent, GetWelcomeMessage, GetWorldRotation, RemoveFavoriteChannel, SetFavoriteChannels, SetWelcomeMessage } from "@/services/DataFromStorage";
+import { GetClouds, GetFavoriteChannels, GetFavoriteRadios, GetTransparent, GetWelcomeMessage, GetWorldRotation, RemoveFavoriteChannel, RemoveFavoriteRadio, SetFavoriteChannels, SetFavoriteRadios, SetWelcomeMessage } from "@/services/DataFromStorage";
 import { GetRadio } from "@/services/FindRadioCountry";
 import { getCountryFromUrl, getModeFromUrl, getSubnameCountryFromUrl, setCountry, setMode, useMode } from "./router";
 import AudioPlayer from "@/components/AudioPlayer";
@@ -49,14 +49,32 @@ export default function Home() {
 
       setPlaylist(playlist)
     }else if(mode=="radio"){
-      setPlaylist(await GetRadio(subname))
+
+      const radiolist=await GetRadio(subname)
+      const favoriteradiolist=GetFavoriteRadios()
+      
+      radiolist.map((c: { name: any; favorite: boolean; })=>{
+        const channel=favoriteradiolist.find((x: { name: any; })=>x.name==c.name)
+        if(channel){
+          c.favorite=true;
+          return c;
+        }else{
+          c.favorite=false;
+          return c;
+        }
+      })
+
+      setPlaylist(radiolist)
     }else if(mode=="news"){
       setPlaylist(await findNews(subname,country))
     }else if(mode=="favorites"){
-      console.log("favorites xdd")
       ChangeMode("favorites")
       setCurrentcountry("")
-      setPlaylist(GetFavoriteChannels())
+      let finalrray:any[]=[]
+      finalrray =finalrray.concat(GetFavoriteChannels())
+      finalrray =finalrray.concat(GetFavoriteRadios())
+      console.log(finalrray)
+      setPlaylist(finalrray)
     }
 
     if(mode!="favorites"){
@@ -73,7 +91,6 @@ export default function Home() {
 
   //when you click a playlist in the sidebar in the tv mode
   async function onClickPlaylist(url:any,name:string){
-
     //to pause and hide the radio player
     setCurrentUrlRadio(null)
     setcurrentRadiolistname(null)
@@ -139,6 +156,7 @@ export default function Home() {
   }
 
   function AddElementToFavorites(name:string,url:string,type:string,region:string){
+    
     if(type=="tv"){
 
       const channels=GetFavoriteChannels()
@@ -155,7 +173,16 @@ export default function Home() {
 
       
     }else if(type=="radio"){
+      const radios=GetFavoriteRadios()
 
+      const exists = radios.some((c: { name: string }) => c.name === name);
+      if (exists) {
+        RemoveFavoriteRadio(name);
+        return -1
+      }else{
+        SetFavoriteRadios(name,url,type,region)
+        return 1;
+      }
     }
 
   }
@@ -233,8 +260,8 @@ export default function Home() {
         )}
 
         <Sidebar playlist={playlist} onClickPlaylist={onClickPlaylist} visibility={visibility} sidebarVisibility={sidebarVisibility} country={country} subname={subname} channelLogos={showchannelsimage} onClickAudio={onClickAudio} mode={mode} AddElementToFavorites={AddElementToFavorites}></Sidebar>
-        <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname}></VideoPlayer>
-        <AudioPlayer url={currentUrlRadio} nameplaylist={currentRadiolistname}></AudioPlayer>
+        <VideoPlayer url={currentUrl} nameplaylist={currentPlaylistname} setvideourl={setCurrentUrl}></VideoPlayer>
+        <AudioPlayer url={currentUrlRadio} nameplaylist={currentRadiolistname} setradiourl={setCurrentUrlRadio}></AudioPlayer>
         <TooglePanel TooglePanelchanges={TooglePanelchanges} mode={mode} changeMode={ChangeMode} setaboutsectionenabled={setaboutsectionenabled} clickopenfavorites={clickopenfavorites}></TooglePanel>
         <AboutComponent aboutsectionenabled={aboutsectionenabled} setaboutsectionenabled={setaboutsectionenabled}></AboutComponent>
         <WelcomeMessage welcomemessageviewed={welcomemessageviewed} AcceptWelcomeMessage={AcceptWelcomeMessage}></WelcomeMessage>

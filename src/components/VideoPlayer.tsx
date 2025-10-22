@@ -4,21 +4,11 @@ import Hls from "hls.js";
 
 interface VideoPlayerProps {
   url:any,
-  nameplaylist:any
+  nameplaylist:any,
+  setvideourl:(url:string)=>void
 }
 
-function stopvideo(){
-  const video=(document.getElementById("videoplayer") as HTMLVideoElement)
-  const videoyoutube=(document.getElementById("youtubeplayer") as HTMLIFrameElement)
-  if(video){
-    video.pause()
-    videoyoutube.src=""
-  }
-  const videocontainer=(document.getElementById("videocontainer") as HTMLElement)
-  if(videocontainer){
-    videocontainer.style.display="none"
-  }
-}
+
 
 function playvideo(){
   const radio=(document.getElementById("videoplayer") as HTMLVideoElement)
@@ -33,9 +23,23 @@ function playvideo(){
 
 
 
-const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist }:any) => {
+const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist,setvideourl }:any) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const urlYoutube:string | undefined=undefined
+
+    function stopvideo(){
+    const video=(document.getElementById("videoplayer") as HTMLVideoElement)
+    const videoyoutube=(document.getElementById("youtubeplayer") as HTMLIFrameElement)
+    if(video){
+      video.pause()
+      videoyoutube.src=""
+      setvideourl("")
+    }
+    const videocontainer=(document.getElementById("videocontainer") as HTMLElement)
+    if(videocontainer){
+      videocontainer.style.display="none"
+    }
+  }
 
   useEffect(() => {
     if (!url) return;

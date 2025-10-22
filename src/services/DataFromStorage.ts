@@ -116,10 +116,10 @@ export function GetFavoriteChannels(){
 }
 
 
-export function SetFavoriteRadios(name:string,channelurl:string,iconurl:string,type:string,countrysubname:string){
+export function SetFavoriteRadios(name:string,channelurl:string,type:string,countrysubname:string){
     if (typeof window === "undefined") return true;
     const content=GetFavoriteRadios()
-    content.push({name:name,url:channelurl,icon:iconurl,type:type,favorite:true,region:countrysubname})
+    content.push({name:name,url:channelurl,type:type,favorite:true,region:countrysubname})
     localStorage.setItem("favoriteradios",JSON.stringify(content))
 }
 

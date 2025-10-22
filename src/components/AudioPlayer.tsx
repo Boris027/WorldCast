@@ -4,19 +4,10 @@ import { useEffect } from "react";
 
 interface AudioPlayerProps {
   url:any,
-  nameplaylist:any
+  nameplaylist:any,
+  setradiourl:(url:string)=>void
 }
 
-function stopradio(){
-  const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
-  if(radio){
-    radio.pause()
-  }
-  const audiocontainer=(document.getElementById("audiocontainer") as HTMLElement)
-  if(audiocontainer){
-    audiocontainer.style.display="none"
-  }
-}
 
 function playradio(){
   const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
@@ -41,7 +32,20 @@ function error(){
 
 
 
-const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist }:any) => {
+const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist,setradiourl }:any) => {
+
+  function stopradio(){
+    const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
+    if(radio){
+      radio.pause()
+      setradiourl(null)
+    }
+    const audiocontainer=(document.getElementById("audiocontainer") as HTMLElement)
+    if(audiocontainer){
+      audiocontainer.style.display="none"
+    }
+  }
+
 
   useEffect(() => {
     const radio=(document.getElementById("radioplayer") as HTMLAudioElement)

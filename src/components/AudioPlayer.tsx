@@ -1,5 +1,6 @@
 "use client";
 
+import Hls from "hls.js";
 import { useEffect } from "react";
 
 interface AudioPlayerProps {
@@ -9,17 +10,7 @@ interface AudioPlayerProps {
 }
 
 
-function playradio(){
-  const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
-  if(radio){
-    radio.autoplay=true
-    radio.play()
-  }
-  const audiocontainer=(document.getElementById("audiocontainer") as HTMLElement)
-  if(audiocontainer){
-    audiocontainer.style.display="block"
-  }
-}
+
 
 function error(){
   const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
@@ -33,6 +24,32 @@ function error(){
 
 
 const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist,setradiourl }:any) => {
+
+
+  function playradio(url:string){
+  const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
+    if(radio){
+      //radio.autoplay=true
+      //radio.play()
+      if (url.endsWith('.m3u8')){
+        const hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(radio);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          console.log('HLS audio manifest loaded, playing...');
+          radio.play().catch(console.error);
+        });
+      }else{
+        radio.autoplay=true
+        radio.play()
+      }
+      
+    }
+    const audiocontainer=(document.getElementById("audiocontainer") as HTMLElement)
+    if(audiocontainer){
+      audiocontainer.style.display="block"
+    }
+  }
 
   function stopradio(){
     const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
@@ -55,7 +72,7 @@ const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist,setradiourl }
       errormessage.style.display="none"
     }
     if(url && nameplaylist){
-      playradio()
+      playradio(url)
     }else{
       stopradio()
     }

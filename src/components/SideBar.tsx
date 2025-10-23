@@ -30,49 +30,54 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
     }
 
     useEffect(() => {
-        const capital=GetCapital(subname)
-        setcapital("")
-        setTime("99:99")
-        let interval: number | null = null; 
-        if(capital){
-            setcapital(capital)
-        }else{
-            setTime("Favorites")
-        }
-        const timezone=GetTimeZone(subname)
-        if (timezone) {
-            interval = window.setInterval(() => {
-            const now = DateTime.now().setZone(timezone); 
-            setTime(now.toFormat("HH:mm"));           
-            }, 1000);
-        }
-
-        //console.log(playlist)
-        console.log(playlist)
-        if(playlist.length==0 ){
-            (document.getElementById("nocontentavaliable") as HTMLElement).style.display="block"
-        }else{
-            (document.getElementById("nocontentavaliable") as HTMLElement).style.display="none";
-        }
+        if(country && mode || mode=="favorites"){
+            sidebarVisibility("block")
         
-        if(mode=="tv"){
-            (document.getElementById("input") as HTMLInputElement).style.display="block";
-            (document.getElementById("input") as HTMLInputElement).placeholder = "Channel";
-        }else if(mode=="radio"){
-            (document.getElementById("input") as HTMLInputElement).style.display="block";
-            (document.getElementById("input") as HTMLInputElement).placeholder = "Radio";
-        }else if(mode=="news"){
-            (document.getElementById("input") as HTMLInputElement).style.display="block";
-            (document.getElementById("input") as HTMLInputElement).placeholder = "News";
-        }else if(mode=="favorites"){
-            (document.getElementById("input") as HTMLInputElement).style.display="none";
+            const capital=GetCapital(subname)
+            setcapital("")
+            setTime("99:99")
+            let interval: number | null = null; 
+            if(capital){
+                setcapital(capital)
+            }else{
+                setTime("Favorites")
+            }
+            const timezone=GetTimeZone(subname)
+            if (timezone) {
+                interval = window.setInterval(() => {
+                const now = DateTime.now().setZone(timezone); 
+                setTime(now.toFormat("HH:mm"));           
+                }, 1000);
+            }
+
+            //console.log(playlist)
+            console.log(playlist)
+            if(playlist.length==0 ){
+                (document.getElementById("nocontentavaliable") as HTMLElement).style.display="block"
+            }else{
+                (document.getElementById("nocontentavaliable") as HTMLElement).style.display="none";
+            }
+            
+            if(mode=="tv"){
+                (document.getElementById("input") as HTMLInputElement).style.display="block";
+                (document.getElementById("input") as HTMLInputElement).placeholder = "Channel";
+            }else if(mode=="radio"){
+                (document.getElementById("input") as HTMLInputElement).style.display="block";
+                (document.getElementById("input") as HTMLInputElement).placeholder = "Radio";
+            }else if(mode=="news"){
+                (document.getElementById("input") as HTMLInputElement).style.display="block";
+                (document.getElementById("input") as HTMLInputElement).placeholder = "News";
+            }else if(mode=="favorites"){
+                (document.getElementById("input") as HTMLInputElement).style.display="none";
+            }
+            setvalueInput("")
+
+            return () => {
+                if (interval) clearInterval(interval);
+            };
+        }else{
+            sidebarVisibility("none")
         }
-        setvalueInput("")
-
-        return () => {
-            if (interval) clearInterval(interval);
-        };
-
     },[playlist,mode])
 
     function onclickitem(url:string,name:string,type:string){

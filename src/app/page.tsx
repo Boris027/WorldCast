@@ -23,6 +23,7 @@ export default function Home() {
   }, [])
 
   async function getCountryPlaylists(country:string,subname:string){
+    setCurrentVisibility("none")
     const mode=getModeFromUrl()
     console.log(mode)
     //set the country in params
@@ -83,7 +84,7 @@ export default function Home() {
     }
     
     setshowchannelsimage(false)
-    sidebarVisibility("block")
+    
     //findNews(country)
 
     //GetRadio(subname)

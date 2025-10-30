@@ -3,6 +3,7 @@
 import Hls from "hls.js";
 import { useEffect } from "react";
 
+//Define the props for the audio player
 interface AudioPlayerProps {
   url:any,
   nameplaylist:any,
@@ -11,7 +12,7 @@ interface AudioPlayerProps {
 
 
 
-
+//Function to handle audio errors
 function error(){
   const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
   const errormessage=(document.getElementById("radioerrormessage") as HTMLElement)
@@ -25,13 +26,15 @@ function error(){
 
 const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist,setradiourl }:any) => {
 
-
+  //Function to play the radio
   function playradio(url:string){
   const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
     if(radio){
-      //radio.autoplay=true
-      //radio.play()
+
+      //Check if the url is hls or not
       if (url.endsWith('.m3u8')){
+
+        //Use hls.js to play the hls stream
         const hls = new Hls();
         hls.loadSource(url);
         hls.attachMedia(radio);
@@ -39,19 +42,25 @@ const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist,setradiourl }
           console.log('HLS audio manifest loaded, playing...');
           radio.play().catch(console.error);
         });
+
       }else{
+
+        //If not hls just play the radio
         radio.autoplay=true
         radio.play()
       }
       
     }
+    //Show the audio container
     const audiocontainer=(document.getElementById("audiocontainer") as HTMLElement)
     if(audiocontainer){
       audiocontainer.style.display="block"
     }
   }
 
+  //Function to stop the radio
   function stopradio(){
+    //Pause the radio and hide the container
     const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
     if(radio){
       radio.pause()
@@ -63,7 +72,7 @@ const AudioPlayer:React.FC<AudioPlayerProps> = ({ url,nameplaylist,setradiourl }
     }
   }
 
-
+  //Use effect to play the radio when the url or nameplaylist changes
   useEffect(() => {
     const radio=(document.getElementById("radioplayer") as HTMLAudioElement)
     const errormessage=(document.getElementById("radioerrormessage") as HTMLElement)

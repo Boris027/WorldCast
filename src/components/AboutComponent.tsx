@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import me from "@/assets/images/me.jpeg"
+
+//Define the props for the about component
 interface AboutComponentProps{
     aboutsectionenabled:boolean,
     setaboutsectionenabled:(value:boolean)=>void
@@ -7,25 +9,28 @@ interface AboutComponentProps{
 
 
 
-
+//About component
 const AboutComponent:React.FC<AboutComponentProps> = ({aboutsectionenabled,setaboutsectionenabled}:any) => {
-    function hide(){
-        setaboutsectionenabled()
+
+  //Function to hide the about section
+  function hide(){
+    setaboutsectionenabled()
+  }
+
+  //Use effect to show or hide the about section based on enabled state
+  useEffect(() => {
+      
+    if(aboutsectionenabled){
+      (document.getElementById("aboutdiv") as HTMLElement).style.display="block";
+    }else{
+      (document.getElementById("aboutdiv") as HTMLElement).style.display="none";
     }
 
-    useEffect(() => {
-        
-        if(aboutsectionenabled){
-            (document.getElementById("aboutdiv") as HTMLElement).style.display="block";
-        }else{
-            (document.getElementById("aboutdiv") as HTMLElement).style.display="none";
-        }
+
+  },[aboutsectionenabled])
 
 
-    },[aboutsectionenabled])
-
-
-    return <div
+  return <div
   id="aboutdiv"
   style={{
     position: "fixed",

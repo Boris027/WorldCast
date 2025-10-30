@@ -85,12 +85,14 @@ export function setCountry(newCountry: string,subname:string) {
   window.history.replaceState({}, '', newUrl);
 }
 
+//Function to get the country from url
 export function getCountryFromUrl():string | null | undefined {
   if (typeof window === "undefined" ) return;
   const params = new URLSearchParams(window.location.search);
   return params.get('country')?.split("-")[0];
 }
 
+//Function to get the subname country from url
 export function getSubnameCountryFromUrl():string | null | undefined {
   if (typeof window === "undefined" ) return;
   const params = new URLSearchParams(window.location.search);

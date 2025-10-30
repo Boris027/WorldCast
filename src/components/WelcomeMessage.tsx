@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-
+//Define the props for the welcome message
 interface WelcomeMessageProps {
   welcomemessageviewed:boolean,
   AcceptWelcomeMessage:()=>void;
 }
+//Welcome message component
 const WelcomeMessage:React.FC<WelcomeMessageProps> = ({ welcomemessageviewed,AcceptWelcomeMessage }:any) => {
 
-    
+    //Use effect to show or hide the welcome message based on viewed state
     useEffect(()=> {
         if(!welcomemessageviewed){
             (document.getElementById("welcomemessagecontainer") as HTMLElement).style.display="block"

@@ -4,6 +4,7 @@ import { GetCapital, GetTimeZone } from "@/services/DataFromStorage";
 import { DateTime } from "luxon";
 import { setCountry } from "@/app/router";
 
+//Define the props for the sidebar
 interface SidebarProps {
   playlist: listPlaylist[];
   onClickPlaylist: (url:string,name:string) => void; // callback from parent
@@ -20,15 +21,19 @@ interface SidebarProps {
 
 
 
-
+//Sidebar component
 const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,sidebarVisibility,country,subname,channelLogos,onClickAudio,mode,AddElementToFavorites }:any) => {
+    //State for input value
     const [valueInput,setvalueInput]=useState<string>("")
+    //State for capital
     const [capital,setcapital]=useState<string>("")
+    //State for time
     const [time, setTime] = useState("99:99");
+    //Function to clear input
     function clearinput(){
         setvalueInput("")
     }
-
+    //Use effect to update time every second
     useEffect(() => {
         if(country && mode || mode=="favorites"){
             sidebarVisibility("block")
@@ -50,7 +55,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
                 }, 1000);
             }
 
-            //console.log(playlist)
+            //Handle no content avaliable
             console.log(playlist)
             if(playlist.length==0 ){
                 (document.getElementById("nocontentavaliable") as HTMLElement).style.display="block"
@@ -58,6 +63,7 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
                 (document.getElementById("nocontentavaliable") as HTMLElement).style.display="none";
             }
             
+            //Set input placeholder based on mode
             if(mode=="tv"){
                 (document.getElementById("input") as HTMLInputElement).style.display="block";
                 (document.getElementById("input") as HTMLInputElement).placeholder = "Channel";
@@ -70,16 +76,20 @@ const Sidebar:React.FC<SidebarProps>=({ playlist,onClickPlaylist,visibility,side
             }else if(mode=="favorites"){
                 (document.getElementById("input") as HTMLInputElement).style.display="none";
             }
+            
+            //Reset input value
             setvalueInput("")
 
             return () => {
                 if (interval) clearInterval(interval);
             };
         }else{
+            // Hide sidebar
             sidebarVisibility("none")
         }
     },[playlist,mode])
 
+    //Function to handle item click
     function onclickitem(url:string,name:string,type:string){
         if(type=="tv"){
             onClickPlaylist(url,name)

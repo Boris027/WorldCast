@@ -10,12 +10,14 @@ import worldimage from "@/assets/images/earth-blue-marble.jpg";
 import topology from "@/assets/images/earth-topology.png";
 import dataset from "@/assets/datasets/countries.json";
 
+// Define the properties for each country feature
 interface FeatureProperties {
   ADMIN: string;
   ISO_A2: string;
   [key: string]: any;
 }
 
+// Define the structure of country features
 interface GlobeComponentProps {
   onClickCountry: (country: string, subname: string) => void;
   cloudsenabled: boolean;
@@ -23,6 +25,7 @@ interface GlobeComponentProps {
   transparency: boolean;
 }
 
+// Main Globe Component
 const GlobeComponent: React.FC<GlobeComponentProps> = ({
   onClickCountry,
   cloudsenabled,
@@ -38,7 +41,7 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
   useEffect(() => {
     if (typeof window === "undefined" || !globeContainer.current) return;
     if (!globeContainer.current || globeRef.current) return;
-
+    // Initialize Globe
     const globe = new (Globe as any)()
       .globeImageUrl(worldimage.src)
       .bumpImageUrl(topology.src)
@@ -50,7 +53,7 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
     globeRef.current = globe;
 
     
-
+    // Store reference to polygon group for later use
     const polygonGroup = globe.scene().children.find(
       (obj: any) => obj.name === "polygons"
     );
@@ -61,6 +64,7 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
     const maxVal = Math.max(...countries.map((d: any) => d.properties.POP_EST || 0));
     const colorScale = d3.scaleSequentialSqrt(d3.interpolateYlGnBu).domain([0, maxVal]);
 
+    // Function to convert string to color
     const stringToColor = (str: string) => {
       let hash = 0;
       for (let i = 0; i < str.length; i++) {
@@ -71,6 +75,7 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
       return `hsla(${hue}, 70%, 50%, ${alpha})`;
     };
 
+    // Add polygons to the globe
     globe
       .polygonsData(countries)
       .polygonAltitude(0.009)
@@ -84,6 +89,7 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
         <b>${properties.ADMIN} (${isoCode})</b><br/>
       `
       })
+      // Add hover and click interactions
       .onPolygonHover((hoverD: any) =>
         globe
           .polygonAltitude((d: any) => (d === hoverD ? 0.08 : 0.009))
@@ -91,6 +97,7 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
             d === hoverD ? "steelblue" : stringToColor(d.properties.ISO_A3)
           )
       )
+      // Add click interactions
       .onPolygonClick((d: any) => {
         onClickCountry(d.properties.ADMIN, d.properties.ISO_A2);
       })

@@ -1,6 +1,6 @@
 import { GetClouds, GetTransparent, GetWorldRotation, SetClouds, SetTransparent, SetWorldRotation } from "@/services/DataFromStorage";
 import { useEffect, useState } from "react";
-
+//Define the props for the toggle panel
 interface TooglePanelProps {
   TooglePanelchanges: () => void; // callback from parent
   mode:string,
@@ -8,13 +8,13 @@ interface TooglePanelProps {
   setaboutsectionenabled:(value:boolean)=>void
   clickopenfavorites:()=>void
 }
-
+//Toggle panel component
 const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMode,setaboutsectionenabled,clickopenfavorites }:any)=>{
-
+    //States for toggles
     const [checked, setChecked] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
-
+    //Use effect to get initial states
     useEffect(() => {
         async function getStates(){
             setChecked(GetWorldRotation())
@@ -26,7 +26,7 @@ const TooglePanel:React.FC<TooglePanelProps>=({ TooglePanelchanges,mode,changeMo
         
         changeActivation(mode)
     },[])
-
+    //Function to change button activation
     function changeActivation(modexd:string){
         if(modexd=="tv"){
             document.getElementById("tv")?.classList.replace("text-gray-700","text-white")

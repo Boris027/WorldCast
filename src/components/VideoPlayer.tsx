@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useEffect } from "react";
 import Hls from "hls.js";
-
+//Define the props for the video player
 interface VideoPlayerProps {
   url:any,
   nameplaylist:any,
@@ -9,7 +9,7 @@ interface VideoPlayerProps {
 }
 
 
-
+//Function to play the video
 function playvideo(){
   const radio=(document.getElementById("videoplayer") as HTMLVideoElement)
   if(radio){
@@ -22,12 +22,13 @@ function playvideo(){
 }
 
 
-
+//Component for video player
 const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist,setvideourl }:any) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const urlYoutube:string | undefined=undefined
 
-    function stopvideo(){
+  //Function to stop the video
+  function stopvideo(){
     const video=(document.getElementById("videoplayer") as HTMLVideoElement)
     const videoyoutube=(document.getElementById("youtubeplayer") as HTMLIFrameElement)
     if(video){
@@ -41,6 +42,7 @@ const VideoPlayer:React.FC<VideoPlayerProps> = ({ url,onClickClose,nameplaylist,
     }
   }
 
+  //Use effect to handle video playback
   useEffect(() => {
     if (!url) return;
 

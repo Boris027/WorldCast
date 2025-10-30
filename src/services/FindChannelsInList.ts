@@ -35,17 +35,20 @@ export async function loadPlaylist(country:string,subname:string) {
       })
 
     }else{
+      //if the country doesnt have channels load from iptv api
       lists= await getPlayList(country,subname)
     }
   }else{
+    //if the country doesnt exist in metadata load from iptv api
     lists= await getPlayList(country,subname)
   }
 
   return lists
 }
 
+//Function to get playlist from iptv api
 async function getPlayList(country:string,subname:string){
-
+  //Fix country names
   if(country=="United States of America"){
     country="United States"
   }else if(country=="Macedonia"){
@@ -59,20 +62,20 @@ async function getPlayList(country:string,subname:string){
   }else if(country=="Turkey"){
     country="Turkiye"
   }
-
+  //Load the full list only once
   if(Object.keys(finallist).length === 0){
 
     finallist=await convertM3UtoJSON("https://iptv-org.github.io/iptv/index.country.m3u",subname)
     
   }
-
+  //Filter by country
   const list2=finallist.filter(c=>c.group==country)
   return list2
   
 }
 
 
-
+//Function to convert M3U to JSON
 async function convertM3UtoJSON(url: string,subname:string): Promise<listPlaylist[]> {
   const res = await fetch(url);
   const text = await res.text();
